@@ -14,7 +14,7 @@
 		<tstamp/>
 		<mkdir dir="${path.dist.signed}"/>
 	</target>
-	<target name="build" depends="init" description="Build the JNLP file">
+	<target name="build" depends="init,clean" description="Build the JNLP file">
 		<copy toDir="${path.dist.signed}">
 			<fileset dir="${path.lib}">
 				<include name="**/*.jar"/>
