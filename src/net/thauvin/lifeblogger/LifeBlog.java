@@ -44,7 +44,7 @@ import java.io.IOException;
  * The <code>LifeBlog</code> abstract class provides the base functionality for file transfer-based ({@link LifeFTP},
  * {@link LifeMediaObject}, etc.) actions.
  *
- * @author Erik C. Thauvin
+ * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
  *
  * @created Jul 20, 2004

@@ -45,7 +45,7 @@ import java.net.URLConnection;
 /**
  * The <code>LifeMediaObject</code> class posts a new media object via the metaWeblog.newMediaObject XML-RPC method.
  *
- * @author Erik C. Thauvin
+ * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
  *
  * @created Jul 21, 2004

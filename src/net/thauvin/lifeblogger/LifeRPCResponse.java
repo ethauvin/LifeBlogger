@@ -1,6 +1,9 @@
 /*
  * @(#)LifeRPCResponse.java
  *
+ * Copyright (c) 2004, Erik C. Thauvin (http://www.thauvin.net/erik/)
+ * All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
@@ -42,7 +45,7 @@ import java.io.InputStream;
 /**
  * The <code>LifeRPCResponse</code> class uses the Thinlet DOM parser to process a XML-RCP response.
  *
- * @author Erik C. Thauvin
+ * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
  *
  * @created Jul 21, 2004

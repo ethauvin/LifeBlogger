@@ -48,7 +48,7 @@ import java.io.IOException;
 /**
  * The <code>LifeFTP</code> class stores/uploads a file to a FTP server.
  *
- * @author Erik C. Thauvin
+ * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
  *
  * @created Jul 20, 2004

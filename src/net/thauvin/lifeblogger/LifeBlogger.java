@@ -59,7 +59,7 @@ import javax.swing.*;
 /**
  * The <code>LifeBlogger</code> class uploads/posts Lifeblog's favorite data to a blog.
  *
- * @author Erik C. Thauvin
+ * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
  *
  * @created Jul 19, 2004

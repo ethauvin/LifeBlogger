@@ -46,7 +46,7 @@ import java.net.URLConnection;
 /**
  * The <code>LifePostObject</code> class posts a new blog entry using the blogger.newPost() XML-RPC method.
  *
- * @author Erik C. Thauvin
+ * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
  *
  * @created Jul 21, 2004
