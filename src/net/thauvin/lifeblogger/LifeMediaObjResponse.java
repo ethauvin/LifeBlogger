@@ -98,7 +98,14 @@ public class LifeMediaObjResponse extends Thinlet
 				final Object url = getDOMNode(member, "value", 0);
 				final Object string = getDOMNode(url, "string", 0);
 
-				_response = getDOMText(string);
+				if (string == null)
+				{
+					_response = getDOMText(url);
+				}
+				else
+				{
+					_response = getDOMText(string);
+				}
 
 				return true;
 			}
@@ -107,11 +114,24 @@ public class LifeMediaObjResponse extends Thinlet
 				final Object fault = getDOMNode(dom, "fault", 0);
 				final Object value = getDOMNode(fault, "value", 0);
 				final Object struct = getDOMNode(value, "struct", 0);
-				final Object member = getDOMNode(struct, "member", 0);
+				Object member = getDOMNode(struct, "member", 0);
+
+				if (getDOMCount(struct, "member") > 1)
+				{
+					member = getDOMNode(struct, "member", 1);
+				}
+
 				final Object error = getDOMNode(member, "value", 0);
 				final Object string = getDOMNode(error, "string", 0);
 
-				_response = getDOMText(string);
+				if (string != null)
+				{
+					_response = getDOMText(string);
+				}
+				else
+				{
+					throw new IOException("Could not parse the XML-RPC error response.");
+				}
 
 				return false;
 			}
