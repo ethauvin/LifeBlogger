@@ -64,6 +64,14 @@
 			<fileset file="${path.dist}/${jar.name}-src.zip"/>
 		</ftp>
 	</target>
+	<target name="ftp-update" depends="build" description="Upload the files">
+		<ftp server="${ftp.server}" userid="${ftp.userid}" remotedir="${ftp.remotedir}" password="${ftp.password}">
+			<fileset file="${path.dist.signed}/${jar.name}.jar"/>
+			<fileset file="${proj.name}.jnlp"/>
+			<fileset dir="${path.images}"/>
+			<fileset file="${path.dist}/${jar.name}-src.zip"/>
+		</ftp>
+	</target>
 	<target name="clean" depends="init" description="Removes jars">
 		<delete quiet="true" includeEmptyDirs="true">
 			<fileset dir="${path.dist.signed}" includes="*,*/**"/>
