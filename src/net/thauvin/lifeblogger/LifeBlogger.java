@@ -80,7 +80,7 @@ public class LifeBlogger extends Thinlet
 	/**
 	 * Creates a new LifeBlogger object.
 	 *
-	 * @throws IOException DOCUMENT ME!
+	 * @throws IOException If an error occurs while creating the object.
 	 */
 	private LifeBlogger()
 				 throws IOException

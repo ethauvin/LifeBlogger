@@ -38,6 +38,7 @@ package net.thauvin.lifeblogger;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.ftp.FTP;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -116,6 +117,11 @@ public class LifeFTP extends LifeBlog
 				if (success)
 				{
 					final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(getFile()));
+
+					if (!getFilename().endsWith(".txt"))
+					{
+						ftp.setFileTransferMode(FTP.BINARY_FILE_TYPE);
+					}
 
 					ftp.storeFile(getFilename(), bis);
 
