@@ -73,6 +73,8 @@ public class LifeBlogger extends Thinlet
 	private static final String JDBC_PREFIX = "jdbc:sqlite:/";
 	private static final String DATABASE = "\\DataBase\\NokiaLifeblogDataBase.db";
 	private static final String DEFAULT_ACTION = "mw";
+	private static final String MIME_JPG = "image/jpeg";
+	private static final String MIME_3GP = "video/3gpp";
 	private final Properties _prefs = new Properties();
 	private File _homeDir = new File(System.getProperty("user.home") + "\\My Documents\\NokiaLifeblogData");
 	private String _action;
@@ -245,6 +247,10 @@ public class LifeBlogger extends Thinlet
 			boolean first = true;
 			int found = 0;
 
+			String[] info;
+			String oid;
+			String icon;
+
 			while (rs.next())
 			{
 				ts = rs.getString("TimeStamp");
@@ -255,20 +261,22 @@ public class LifeBlogger extends Thinlet
 				cell = Thinlet.create("cell");
 				thinlet.setString(cell, "text", name);
 
-				if (name.toLowerCase().endsWith("jpg"))
+				oid = rs.getString("HooverObjectID");
+				info = fileInfo(oid);
+				icon = "/icon/text.gif";
+
+				if (MIME_JPG.equals(info[2]))
 				{
-					thinlet.setIcon(cell, "icon", getIcon("/icon/image.gif"));
+					icon = "/icon/image.gif";
 				}
-				else if (name.toLowerCase().endsWith("3gp"))
+				else if (MIME_3GP.equals(info[2]))
 				{
-					thinlet.setIcon(cell, "icon", getIcon("/icon/movie.gif"));
-				}
-				else
-				{
-					thinlet.setIcon(cell, "icon", getIcon("/icon/text.gif"));
+					icon = "/icon/movie.gif";
 				}
 
-				thinlet.putProperty(cell, "oid", rs.getString("HooverObjectID"));
+				thinlet.setIcon(cell, "icon", getIcon(icon));
+
+				thinlet.putProperty(cell, "oid", oid);
 				thinlet.add(row, cell);
 
 				cell = Thinlet.create("cell");
@@ -530,53 +538,50 @@ public class LifeBlogger extends Thinlet
 
 			final String[] info = fileInfo(oid);
 
-			if (info[0].length() > 0)
+			if ((info[1] != null) && MIME_JPG.equals(info[2]))
 			{
-				if ((info[2].length() > 0) && info[2].endsWith("jpeg"))
+				// Retrieve	the jpg	image
+				final BufferedImage in = ImageIO.read(new File(info[1]));
+
+				final int maxDim = 200;
+
+				final int height = in.getHeight();
+				final int width = in.getWidth();
+
+				// Determine the scale.
+				double scale = (double) maxDim / (double) height;
+
+				if (in.getWidth() > in.getHeight())
 				{
-					// Retrieve	the jpg	image
-					final BufferedImage in = ImageIO.read(new File(info[1]));
-
-					final int maxDim = 200;
-
-					final int height = in.getHeight();
-					final int width = in.getWidth();
-
-					// Determine the scale.
-					double scale = (double) maxDim / (double) height;
-
-					if (in.getWidth() > in.getHeight())
-					{
-						scale = (double) maxDim / (double) width;
-					}
-
-					int scaledW = (int) (scale * (double) width);
-					int scaledH = (int) (scale * (double) height);
-
-					// Set the scale.
-					final AffineTransform tx = new AffineTransform();
-
-					if (scale <= 1.0d)
-					{
-						tx.scale(scale, scale);
-					}
-					else
-					{
-						scaledW = width;
-						scaledH = height;
-					}
-
-					final BufferedImage out = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
-
-					final Graphics2D g2d = out.createGraphics();
-					g2d.drawImage(in, tx, null);
-					g2d.dispose();
-
-					final Object preview = parse("preview.xml");
-					setString(preview, "text", info[0]);
-					setIcon(find(preview, "image"), "icon", out);
-					add(preview);
+					scale = (double) maxDim / (double) width;
 				}
+
+				int scaledW = (int) (scale * (double) width);
+				int scaledH = (int) (scale * (double) height);
+
+				// Set the scale.
+				final AffineTransform tx = new AffineTransform();
+
+				if (scale <= 1.0d)
+				{
+					tx.scale(scale, scale);
+				}
+				else
+				{
+					scaledW = width;
+					scaledH = height;
+				}
+
+				final BufferedImage out = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
+
+				final Graphics2D g2d = out.createGraphics();
+				g2d.drawImage(in, tx, null);
+				g2d.dispose();
+
+				final Object preview = parse("preview.xml");
+				setString(preview, "text", info[0]);
+				setIcon(find(preview, "image"), "icon", out);
+				add(preview);
 			}
 		}
 	}
@@ -655,61 +660,6 @@ public class LifeBlogger extends Thinlet
 		catch (Exception e)
 		{
 			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Preforms the post/publish to blog action.
-	 *
-	 * @param dialog The post dialog,
-	 * @param blogPanel The panel contaning the post data.
-	 * @param publish Set to <code>true</code> to publish the post, <code>false</code> otherwise.
-	 *
-	 * @throws IOException If an error occurs while performing the action.
-	 */
-	private void post(Object dialog, Object blogPanel, boolean publish)
-					 throws IOException
-	{
-		final String host = getString(find(blogPanel, "host"), "text");
-		final String blogID = getString(find(blogPanel, "blogid"), "text");
-		final String login = getString(find(blogPanel, "login"), "text");
-		final String password = getString(find(blogPanel, "password"), "text");
-		final String entry = getString(find(blogPanel, "entry"), "text");
-
-		if (host.length() <= 0)
-		{
-			alert("Please specify a XML-RPC URL.");
-		}
-		else if (login.length() <= 0)
-		{
-			alert("Please specify a login name.");
-		}
-		else if (password.length() <= 0)
-		{
-			alert("Please specify a password.");
-		}
-		else if (entry.length() <= 0)
-		{
-			alert("Please specify a post entry.");
-		}
-		else if (blogID.length() <= 0)
-		{
-			alert("Please specify a blog ID.");
-		}
-		else
-		{
-			_prefs.put("blog-host", host);
-			_prefs.put("blog-login", login);
-			_prefs.put("blog-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
-			_prefs.put("blog-id", blogID);
-
-			savePrefs();
-
-			closeDialog(dialog);
-
-			final LifePost post =
-				new LifePost(this, host, blogID, login, password, getString(find(blogPanel, "entry"), "text"), publish);
-			post.start();
 		}
 	}
 
@@ -816,6 +766,61 @@ public class LifeBlogger extends Thinlet
 		catch (Exception e)
 		{
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Preforms the post/publish to blog action.
+	 *
+	 * @param dialog The post dialog,
+	 * @param blogPanel The panel contaning the post data.
+	 * @param publish Set to <code>true</code> to publish the post, <code>false</code> otherwise.
+	 *
+	 * @throws IOException If an error occurs while performing the action.
+	 */
+	private void post(Object dialog, Object blogPanel, boolean publish)
+			   throws IOException
+	{
+		final String host = getString(find(blogPanel, "host"), "text");
+		final String blogID = getString(find(blogPanel, "blogid"), "text");
+		final String login = getString(find(blogPanel, "login"), "text");
+		final String password = getString(find(blogPanel, "password"), "text");
+		final String entry = getString(find(blogPanel, "entry"), "text");
+
+		if (host.length() <= 0)
+		{
+			alert("Please specify a XML-RPC URL.");
+		}
+		else if (login.length() <= 0)
+		{
+			alert("Please specify a login name.");
+		}
+		else if (password.length() <= 0)
+		{
+			alert("Please specify a password.");
+		}
+		else if (entry.length() <= 0)
+		{
+			alert("Please specify a post entry.");
+		}
+		else if (blogID.length() <= 0)
+		{
+			alert("Please specify a blog ID.");
+		}
+		else
+		{
+			_prefs.put("blog-host", host);
+			_prefs.put("blog-login", login);
+			_prefs.put("blog-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
+			_prefs.put("blog-id", blogID);
+
+			savePrefs();
+
+			closeDialog(dialog);
+
+			final LifePost post =
+				new LifePost(this, host, blogID, login, password, getString(find(blogPanel, "entry"), "text"), publish);
+			post.start();
 		}
 	}
 
