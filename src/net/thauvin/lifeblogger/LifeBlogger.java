@@ -43,8 +43,6 @@ import java.awt.*;
 
 import java.io.*;
 
-import java.net.URL;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -73,6 +71,7 @@ public class LifeBlogger extends Thinlet
 		System.getProperty("user.home") + File.separator + ReleaseInfo.getProject() + ".properties";
 	private static final String JDBC_PREFIX = "jdbc:sqlite:/";
 	private static final String DATABASE = "\\DataBase\\NokiaLifeblogDataBase.db";
+	private static final String DEFAULT_ACTION = "ftp";
 	private final Properties _prefs = new Properties();
 	private File _homeDir = new File(System.getProperty("user.home") + "\\My Documents\\NokiaLifeblogData");
 	private String _action;
@@ -114,7 +113,7 @@ public class LifeBlogger extends Thinlet
 		}
 
 		_homeDir = new File(_prefs.getProperty("home", _homeDir.getAbsolutePath()));
-		_action = _prefs.getProperty("via", "ftp");
+		_action = _prefs.getProperty("via", DEFAULT_ACTION);
 
 		try
 		{
@@ -126,7 +125,19 @@ public class LifeBlogger extends Thinlet
 		}
 
 		final Object main = parse("main.xml");
-		setBoolean(find(main, _action), "selected", true);
+
+		final Object via = find(main, _action);
+
+		if (via != null)
+		{
+			setBoolean(via, "selected", true);
+		}
+		else
+		{
+			_action = DEFAULT_ACTION;
+			setBoolean(find(main, _action), "selected", true);
+		}
+
 		add(main);
 	}
 
@@ -371,7 +382,7 @@ public class LifeBlogger extends Thinlet
 		{
 			_prefs.put("host", host);
 			_prefs.put("login", login);
-			_prefs.put("password", password);
+			_prefs.put("password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
 			_prefs.put("path", path);
 
 			savePrefs();
@@ -426,7 +437,7 @@ public class LifeBlogger extends Thinlet
 		{
 			_prefs.put("mw-host", host);
 			_prefs.put("mw-login", login);
-			_prefs.put("mw-password", password);
+			_prefs.put("mw-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
 			_prefs.put("mw-id", blogID);
 
 			savePrefs();
@@ -533,7 +544,7 @@ public class LifeBlogger extends Thinlet
 			setString(find(ftp, "filename"), "text", file.substring(file.lastIndexOf('\\') + 1));
 			setString(find(ftp, "host"), "text", _prefs.getProperty("host", ""));
 			setString(find(ftp, "login"), "text", _prefs.getProperty("login", "anonymous"));
-			setString(find(ftp, "password"), "text", _prefs.getProperty("password", ""));
+			setString(find(ftp, "password"), "text", new String(Base64.decode(_prefs.getProperty("password", ""))));
 			add(ftp);
 			requestFocus(find(ftp, "host"));
 		}
@@ -554,7 +565,7 @@ public class LifeBlogger extends Thinlet
 			setString(find(mw, "filename"), "text", file.substring(file.lastIndexOf('\\') + 1));
 			setString(find(mw, "host"), "text", _prefs.getProperty("mw-host", ""));
 			setString(find(mw, "login"), "text", _prefs.getProperty("mw-login", "anonymous"));
-			setString(find(mw, "password"), "text", _prefs.getProperty("mw-password", ""));
+			setString(find(mw, "password"), "text", new String(Base64.decode(_prefs.getProperty("mw-password", ""))));
 			setString(find(mw, "blogid"), "text", _prefs.getProperty("mw-id", ""));
 			add(mw);
 			requestFocus(find(mw, "host"));
