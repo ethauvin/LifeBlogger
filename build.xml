@@ -37,7 +37,7 @@
 		<jar destfile="${basedir}/${path.dist}/${jar.name}.jar" basedir="${path.jar.build}" excludes="**/.dependency-info/**"/>
 	</target>
 	<target name="src" description="Builds the source archive">
-		<zip zipfile="${path.dist}/${jar.name}-${proj.version}.${build.num.last}.-src.zip">
+		<zip zipfile="${path.dist}/${jar.name}-src.zip">
 			<zipfileset dir="${basedir}" prefix="${jar.name}" defaultexcludes="yes" excludesfile="${basedir}/.cvsignore"/>
 		</zip>
 	</target>

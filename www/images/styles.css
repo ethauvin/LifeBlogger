@@ -1,0 +1,75 @@
+td { font-family: arial; font-size: 12px; color: #000000; }
+
+.textfield { font-family: Arial, Helvetica, sans-serif;	font-size: 11px; font-weight: normal; color: #333333; background-color: #FFFFFF; border: 1px solid #666666; width: 100px; margin: 2px; padding: 0px; height: 15px; }
+
+.Arial12px { font-family: arial; font-size: 12px; color: #000000; }
+
+.Arial10px { font-family: arial; font-size: 10px; color: #000000; }
+
+.Arial12pxBold { font-family: arial; font-weight: bold; font-size: 12px; color: #000000; }
+
+.blueheader { font-family: arial; font-weight: bold; font-size: 14px; color: #5089CA; }
+
+h5.blueheader { font-family: arial;	font-weight: bold; font-size: 14px; color: #5089CA; margin-bottom: 5px; }
+
+.faqblueheader { font-family: arial; font-weight: bold; font-size: 12px; color: #5089CA; }
+
+.darkblueheader { font-family: arial; font-weight: bold; font-size: 14px; color: #2A547A; }
+
+.black13px { font-family: arial; font-weight: bold; font-size: 13px; color: #000000; }
+
+.black12px { font-family: arial; font-weight: bold; font-size: 12px; color: #000000; }
+
+.black11px { font-family: arial; font-weight: normal; font-size: 11px; color: #000000; }
+
+.Blue12px { font-family: arial; font-weight: normal; font-size: 12px; color: #5089CA; }
+
+.Blue12pxBold { font-family: arial; font-weight: bold; font-size: 12px; color: #5089CA; }
+
+.Grey10px { font-family: arial; font-weight: bold; font-size: 10px; color: #666666; }
+
+a:link { color: #0033CC; text-decoration: none; }
+a:active { color: #0033CC; text-decoration: none; }
+a:visited { color:#800080; text-decoration: none; }
+a:hover {color: #0033CC; text-decoration: underline; }
+
+A.blue11px { font-family: arial; font-weight: bold; font-size: 11px; color: #5089CA; text-decoration: none; }
+A.blue11px:Visited { font-family: arial; font-weight: bold; font-size: 11px; color: #5089CA; text-decoration: none;}
+A.blue11px:Active { font-family: arial; font-weight: bold; font-size: 11px; color: #5089CA; text-decoration: none;}
+A.blue11px:Hover { text-decoration: underline; }
+
+A.copy { font-family: arial; font-weight: normal; font-size: 10px; color: #0033CC;}
+A.copy:Visited { font-family: arial; font-weight: normal; font-size: 10px; color: #0033CC;}
+A.copy:Active { font-family: arial; font-weight: normal; font-size: 10px; color: #0033CC;}
+A.copy:Hover { font-family: arial; font-weight: normal; font-size: 10px; color: #0033CC; text-decoration: underline;}
+
+A.minilink { font-family: arial; font-weight: normal; font-size: 10px; color: #000000; text-decoration: underline;}
+A.minilink:Visited { font-family: arial; font-weight: normal; font-size: 10px; color: #000000;text-decoration: underline;}
+A.minilink:Active { font-family: arial; font-weight: normal; font-size: 10px; color: #000000;text-decoration: underline;}
+A.minilink:Hover { font-family: arial; font-weight: normal; font-size: 10px; color: #000000; text-decoration: underline;}
+
+A.faq { font-family: arial; font-weight: bold; font-size: 12px; color: #2A547A; text-decoration: none; }
+A.faq:Visited { font-family: arial; font-weight: bold; font-size: 12px; color: #2A547A; text-decoration: none; }
+A.faq:Active { font-family: arial; font-weight: bold; font-size: 12px; color: #2A547A; text-decoration: none; }
+A.faq:Hover { font-family: arial; font-weight: bold; font-size: 12px; color: #000000; text-decoration: none; }
+
+A.questions { font-family: arial; font-weight: normal; font-size: 12px; color: #2A547A; text-decoration: none; }
+A.questions:Visited { font-family: arial; font-weight: normal; font-size: 12px; color: #2A547A; text-decoration: none; }
+A.questions:Active { font-family: arial; font-weight: normal; font-size: 12px; color: #2A547A; text-decoration: none; }
+A.questions:Hover { font-family: arial; font-weight: normal; font-size: 12px; color: #2A547A; text-decoration: underline; }
+
+#whatIsItDiv { position: absolute; width: 665px; height: 19px; z-index: 2; visibility: hidden; }
+#supportDiv { position: absolute; width: 529px; height: 19px; z-index: 2; visibility: hidden; }
+#tryDiv { position: absolute; width: 491px; height: 19px; z-index: 3; visibility: hidden; }
+#buyDiv { position: absolute; width: 450px; height: 19px; z-index: 3; visibility: hidden; }
+
+.faqNaviDiv { border: 1px solid #D3E1EE; width: 200px; display: block; margin-bottom: 6px; padding-left: 5px; }
+.faqNaviActiveDiv { border: 1px solid #D3E1EE; width: 200px; display: block; background: #D3E1EE; margin-bottom: 7px; font-family: arial; font-size: 12/20px; color: #000000; font-weight: bold; padding-left: 5px; }
+
+.searchfield { border: 0px; background: white; width: 98px; font-family: arial; font-size: 10px; height: 15px; }
+
+td img {display: block;}
+#positioner { position: absolute; }
+.blueheaderbig {
+font-family: arial; font-weight: bold; font-size: 18px; color: #5089CA;
+}

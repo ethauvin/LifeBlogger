@@ -61,6 +61,7 @@
 			</fileset>
 			<fileset file="${proj.name}.jnlp"/>
 			<fileset dir="${path.images}"/>
+			<fileset file="${path.dist}/${jar.name}-src.zip"/>
 		</ftp>
 	</target>
 	<target name="clean" depends="init" description="Removes jars">
