@@ -177,7 +177,7 @@ public class LifeMediaObject extends LifeBlog
 		catch (IOException e)
 		{
 			getThinlet().closeDialog(getDialog());
-			getThinlet().showException(e);
+			getThinlet().handleException(e);
 		}
 		finally
 		{

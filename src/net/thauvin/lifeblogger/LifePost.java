@@ -143,7 +143,7 @@ public class LifePost extends LifeAction
 		catch (IOException e)
 		{
 			getThinlet().closeDialog(getDialog());
-			getThinlet().showException(e);
+			getThinlet().handleException(e);
 		}
 	}
 

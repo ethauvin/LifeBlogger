@@ -65,7 +65,7 @@ import javax.swing.*;
  * @created Jul 19, 2004
  * @since 1.0
  */
-public class LifeBlogger extends Thinlet
+public class LifeBlogger extends AntiAliasedThinlet
 {
 	private static final String DRIVER = "SQLite.JDBCDriver";
 	private static final String PREFS =
@@ -628,7 +628,7 @@ public class LifeBlogger extends Thinlet
 		}
 		catch (Exception e)
 		{
-			showException(e);
+			handleException(e);
 		}
 	}
 
@@ -637,7 +637,7 @@ public class LifeBlogger extends Thinlet
 	 *
 	 * @param thr The exception.
 	 */
-	protected final void showException(Throwable thr)
+	protected final void handleException(Throwable thr)
 	{
 		final StringWriter writer = new StringWriter();
 		thr.printStackTrace(new PrintWriter(writer));

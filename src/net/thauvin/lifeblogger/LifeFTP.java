@@ -36,22 +36,20 @@
  */
 package net.thauvin.lifeblogger;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
-import org.apache.commons.net.ftp.FTP;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
+import java.io.InputStream;
 
 /**
  * The <code>LifeFTP</code> class stores/uploads a file to a FTP server.
  *
  * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
- *
  * @created Jul 20, 2004
  * @since 1.0
  */
@@ -71,8 +69,8 @@ public class LifeFTP extends LifeBlog
 	 * @throws IOException If an error occurs while creating the object.
 	 */
 	public LifeFTP(LifeBlogger thinlet, String host, String login, String password, String path, String filename,
-				   File file)
-			throws IOException
+	               File file)
+	        throws IOException
 	{
 		super(thinlet, host, login, password, path, filename, file);
 	}
@@ -116,16 +114,18 @@ public class LifeFTP extends LifeBlog
 
 				if (success)
 				{
-					final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(getFile()));
-
 					if (!getFilename().endsWith(".txt"))
 					{
-						ftp.setFileTransferMode(FTP.BINARY_FILE_TYPE);
+						ftp.setFileType(FTP.BINARY_FILE_TYPE);
 					}
 
-					ftp.storeFile(getFilename(), bis);
+					ftp.enterLocalPassiveMode();
 
-					bis.close();
+					final InputStream is = new FileInputStream(getFile());
+
+					ftp.storeFile(getFilename(), is);
+
+					is.close();
 
 					success = FTPReply.isPositiveCompletion(ftp.getReplyCode());
 
@@ -138,6 +138,9 @@ public class LifeFTP extends LifeBlog
 						getThinlet().closeDialog(getDialog());
 						getThinlet().postDialog(getPath() + (getPath().endsWith("/") ? "" : "/") + getFilename(), getFilename());
 					}
+
+					ftp.logout();
+
 				}
 			}
 
@@ -146,7 +149,7 @@ public class LifeFTP extends LifeBlog
 		catch (IOException e)
 		{
 			getThinlet().closeDialog(getDialog());
-			getThinlet().showException(e);
+			getThinlet().handleException(e);
 		}
 	}
 }

@@ -28,6 +28,8 @@ h5.blueheader { font-family: arial;	font-weight: bold; font-size: 14px; color: #
 
 .Grey10px { font-family: arial; font-weight: bold; font-size: 10px; color: #666666; }
 
+.Red10px { font-family: arial; font-weight: bold; font-size: 10px; color: red; }
+
 a:link { color: #0033CC; text-decoration: none; }
 a:active { color: #0033CC; text-decoration: none; }
 a:visited { color:#800080; text-decoration: none; }
