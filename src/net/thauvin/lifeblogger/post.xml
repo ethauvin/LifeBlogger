@@ -10,6 +10,7 @@
 	</panel>
 	<panel columns="2" halign="right" gap="4">
 		<button name="cancelbtn" text="Cancel" icon="/icon/exit.gif" action="closeDialog(dialog)"/>
-		<button name="sendbtn" text="Post" icon="/icon/go.gif" action="post(dialog, blog)"/>
+		<!-- <button name="sendbtn" text="Post" icon="/icon/go.gif" action="post(dialog, blog)"/> -->
+		<button name="sendbtn" text="Post" icon="/icon/go.gif" action="publish(dialog, blog)"/>
 	</panel>
 </dialog>

@@ -56,6 +56,7 @@ public class LifePost extends LifeAction
 {
 	private final String _blogEntry;
 	private final String _blogID;
+	private final boolean _publish;
 
 	/**
 	 * Creates a new LifePost object.
@@ -66,16 +67,19 @@ public class LifePost extends LifeAction
 	 * @param login The MetaWeblog login username.
 	 * @param password The MetaWeblog login password.
 	 * @param blogEntry The blog entry.
+	 * @param publish DOCUMENT ME!
 	 *
 	 * @throws IOException If an error occurs while creating the object.
 	 */
-	public LifePost(LifeBlogger thinlet, String url, String blogID, String login, String password, String blogEntry)
+	public LifePost(LifeBlogger thinlet, String url, String blogID, String login, String password, String blogEntry,
+					boolean publish)
 			 throws IOException
 	{
 		super(thinlet, url, login, password);
 
 		_blogEntry = blogEntry;
 		_blogID = blogID;
+		_publish = publish;
 	}
 
 	/**
@@ -104,7 +108,9 @@ public class LifePost extends LifeAction
 																																																																					  .append(getPassword())
 																																																																					  .append("</string></value></param><param><value><string>")
 																																																																					  .append(textToXML(_blogEntry))
-																																																																					  .append("</string></value></param><param><value><boolean>false</boolean></value></param></params></methodCall>");
+																																																																					  .append("</string></value></param><param><value><boolean>")
+																																																																					  .append(String.valueOf(_publish))
+																																																																					  .append("</boolean></value></param></params></methodCall>");
 			final URLConnection urlConn = url.openConnection();
 			urlConn.setDoInput(true);
 			urlConn.setDoOutput(true);
@@ -118,7 +124,6 @@ public class LifePost extends LifeAction
 			dos.close();
 
 			//System.out.println(request);
-
 			final LifeRPCResponse xmlrpc = new LifeRPCResponse(urlConn.getInputStream());
 
 			if (xmlrpc.isValidResponse())
@@ -166,7 +171,7 @@ public class LifePost extends LifeAction
 		}
 
 		// High/Low-ASCII character
-		else if (ch >= 128 || ch < 32)
+		else if ((ch >= 128) || (ch < 32))
 		{
 			c = (int) ch;
 
@@ -195,11 +200,11 @@ public class LifePost extends LifeAction
 		// Loop thru each characters of the text
 		for (int i = 0; i < text.length(); i++)
 		{
-			// Convert character to HTML/XML
+			// Convert character to XML
 			html.append(charToXML(text.charAt(i)));
 		}
 
-		// Return HTML/XML string
+		// Return XML string
 		return html.toString();
 	}
 }

@@ -72,7 +72,7 @@ public class LifeBlogger extends Thinlet
 		System.getProperty("user.home") + File.separator + ReleaseInfo.getProject() + ".properties";
 	private static final String JDBC_PREFIX = "jdbc:sqlite:/";
 	private static final String DATABASE = "\\DataBase\\NokiaLifeblogDataBase.db";
-	private static final String DEFAULT_ACTION = "ftp";
+	private static final String DEFAULT_ACTION = "mw";
 	private final Properties _prefs = new Properties();
 	private File _homeDir = new File(System.getProperty("user.home") + "\\My Documents\\NokiaLifeblogData");
 	private String _action;
@@ -482,47 +482,7 @@ public class LifeBlogger extends Thinlet
 	public final void post(Object dialog, Object blogPanel)
 					throws IOException
 	{
-		final String host = getString(find(blogPanel, "host"), "text");
-		final String blogID = getString(find(blogPanel, "blogid"), "text");
-		final String login = getString(find(blogPanel, "login"), "text");
-		final String password = getString(find(blogPanel, "password"), "text");
-		final String entry = getString(find(blogPanel, "entry"), "text");
-
-		if (host.length() <= 0)
-		{
-			alert("Please specify a XML-RPC URL.");
-		}
-		else if (login.length() <= 0)
-		{
-			alert("Please specify a login name.");
-		}
-		else if (password.length() <= 0)
-		{
-			alert("Please specify a password.");
-		}
-		else if (entry.length() <= 0)
-		{
-			alert("Please specify a post entry.");
-		}
-		else if (blogID.length() <= 0)
-		{
-			alert("Please specify a blog ID.");
-		}
-		else
-		{
-			_prefs.put("blog-host", host);
-			_prefs.put("blog-login", login);
-			_prefs.put("blog-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
-			_prefs.put("blog-id", blogID);
-
-			savePrefs();
-
-			closeDialog(dialog);
-
-			final LifePost post =
-				new LifePost(this, host, blogID, login, password, getString(find(blogPanel, "entry"), "text"));
-			post.start();
-		}
+		post(dialog, blogPanel, false);
 	}
 
 	/**
@@ -622,6 +582,20 @@ public class LifeBlogger extends Thinlet
 	}
 
 	/**
+	 * Preforms the publish to blog action.
+	 *
+	 * @param dialog The post dialog,
+	 * @param blogPanel The panel contaning the post data.
+	 *
+	 * @throws IOException If an error occurs while performing the action.
+	 */
+	public final void publish(Object dialog, Object blogPanel)
+					   throws IOException
+	{
+		post(dialog, blogPanel, true);
+	}
+
+	/**
 	 * Toggles the given button based on the specified table selection.
 	 *
 	 * @param table The table.
@@ -681,6 +655,61 @@ public class LifeBlogger extends Thinlet
 		catch (Exception e)
 		{
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Preforms the post/publish to blog action.
+	 *
+	 * @param dialog The post dialog,
+	 * @param blogPanel The panel contaning the post data.
+	 * @param publish Set to <code>true</code> to publish the post, <code>false</code> otherwise.
+	 *
+	 * @throws IOException If an error occurs while performing the action.
+	 */
+	private void post(Object dialog, Object blogPanel, boolean publish)
+					 throws IOException
+	{
+		final String host = getString(find(blogPanel, "host"), "text");
+		final String blogID = getString(find(blogPanel, "blogid"), "text");
+		final String login = getString(find(blogPanel, "login"), "text");
+		final String password = getString(find(blogPanel, "password"), "text");
+		final String entry = getString(find(blogPanel, "entry"), "text");
+
+		if (host.length() <= 0)
+		{
+			alert("Please specify a XML-RPC URL.");
+		}
+		else if (login.length() <= 0)
+		{
+			alert("Please specify a login name.");
+		}
+		else if (password.length() <= 0)
+		{
+			alert("Please specify a password.");
+		}
+		else if (entry.length() <= 0)
+		{
+			alert("Please specify a post entry.");
+		}
+		else if (blogID.length() <= 0)
+		{
+			alert("Please specify a blog ID.");
+		}
+		else
+		{
+			_prefs.put("blog-host", host);
+			_prefs.put("blog-login", login);
+			_prefs.put("blog-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
+			_prefs.put("blog-id", blogID);
+
+			savePrefs();
+
+			closeDialog(dialog);
+
+			final LifePost post =
+				new LifePost(this, host, blogID, login, password, getString(find(blogPanel, "entry"), "text"), publish);
+			post.start();
 		}
 	}
 
@@ -778,7 +807,7 @@ public class LifeBlogger extends Thinlet
 			putProperty(find(mw, "file"), "mtype", mimeType);
 			setString(find(mw, "filename"), "text", file.substring(file.lastIndexOf('\\') + 1));
 			setString(find(mw, "host"), "text", _prefs.getProperty("mw-host", ""));
-			setString(find(mw, "login"), "text", _prefs.getProperty("mw-login", "anonymous"));
+			setString(find(mw, "login"), "text", _prefs.getProperty("mw-login", ""));
 			setString(find(mw, "password"), "text", new String(Base64.decode(_prefs.getProperty("mw-password", ""))));
 			setString(find(mw, "blogid"), "text", _prefs.getProperty("mw-id", ""));
 			add(mw);
