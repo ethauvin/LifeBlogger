@@ -98,13 +98,13 @@ public class LifePost extends LifeAction
 
 			final StringBuffer request =
 				new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>blogger.newPost</methodName><params><param><value><string>0a6afffffffaffffffb8ffffff8569474cffffffc778500c03ffffffecffffff876116565a27283bffffffda56</string></value></param><param><value><string>").append(_blogID)
-																																																								  .append("</string></value></param><param><value><string>")
-																																																								  .append(getLogin())
-																																																								  .append("</string></value></param><param><value><string>")
-																																																								  .append(getPassword())
-																																																								  .append("</string></value></param><param><value><string>")
-																																																								  .append(textToXML(_blogEntry))
-																																																								  .append("</string></value></param><param><value><boolean>false</boolean></value></param></params></methodCall>");
+																																																																					  .append("</string></value></param><param><value><string>")
+																																																																					  .append(getLogin())
+																																																																					  .append("</string></value></param><param><value><string>")
+																																																																					  .append(getPassword())
+																																																																					  .append("</string></value></param><param><value><string>")
+																																																																					  .append(textToXML(_blogEntry))
+																																																																					  .append("</string></value></param><param><value><boolean>false</boolean></value></param></params></methodCall>");
 			final URLConnection urlConn = url.openConnection();
 			urlConn.setDoInput(true);
 			urlConn.setDoOutput(true);
@@ -116,6 +116,8 @@ public class LifePost extends LifeAction
 			dos.write(request.toString().getBytes());
 			dos.flush();
 			dos.close();
+
+			System.out.println(request);
 
 			final LifeRPCResponse xmlrpc = new LifeRPCResponse(urlConn.getInputStream());
 
@@ -157,36 +159,18 @@ public class LifePost extends LifeAction
 			return ("&lt;");
 		}
 
-		// Convert left bracket
-		else if (ch == '>')
-		{
-			return ("&gt;");
-		}
-
 		// Convert ampersand
 		else if (ch == '&')
 		{
 			return ("&amp;");
 		}
 
-		// High-ASCII character
-		else if (ch >= 128)
+		// High/Low-ASCII character
+		else if (ch >= 128 || ch < 32)
 		{
 			c = (int) ch;
 
 			return ("&#" + c + ';');
-		}
-
-		// Convert double quote
-		else if (ch == '"')
-		{
-			return ("&quot;");
-		}
-
-		// Convert single quote
-		else if (ch == '\'')
-		{
-			return ("&#39;");
 		}
 
 		// No conversion

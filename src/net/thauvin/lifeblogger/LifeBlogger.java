@@ -542,7 +542,7 @@ public class LifeBlogger extends Thinlet
 			setString(find(post, "password"), "text", new String(Base64.decode(_prefs.getProperty("blog-password", ""))));
 			setString(find(post, "entry"), "text",
 					  "<img src=\"" + url + "\" alt=\"" + filename +
-					  "\">\n<p>via <a href=\"http://www.thauvin.net/erik/lifeblogger/\">LifeBlogger</a></p>");
+					  "\">\r<p>via <a href=\"http://www.thauvin.net/erik/lifeblogger/\">LifeBlogger</a></p>");
 			add(post);
 		}
 		catch (Exception e)

@@ -98,7 +98,14 @@ public class LifeRPCResponse extends Thinlet
 				{
 					final Object string = getDOMNode(value, "string", 0);
 
-					_response = getDOMText(string);
+					if (string == null)
+					{
+						_response = getDOMText(value);
+					}
+					else
+					{
+						_response = getDOMText(string);
+					}
 				}
 				else
 				{
