@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dialog name="exception" icon="/icon/help.gif" modal="true"
+	columns="1" top="8" left="8" bottom="8" right="8" gap="8">
+	<label name="message"/>
+	<textarea name="stacktrace" editable="false" width="300" height="150" weightx="1" weighty="1"/>
+	<button name="closebtn" text="Close" halign="center" action="closeDialog(exception)"/>
+</dialog>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<project basedir="." name="webstart" default="build">
+	<property file="${basedir}/build.properties"/>
+	<property file="${basedir}/webstart.properties"/>
+	<property file="${basedir}/keystore.properties"/>
+	<property file="${basedir}/ftp.properties"/>
+	<path id="ant.class">
+		<fileset dir="${path.ant}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<taskdef classpathref="ant.class" resource="com/roxes/tools/ant/taskdefs.properties"/>
+	<target name="init">
+		<tstamp/>
+		<mkdir dir="${path.dist.signed}"/>
+	</target>
+	<target name="build" depends="init" description="Build the JNLP file">
+		<copy toDir="${path.dist.signed}">
+			<fileset dir="${path.lib}">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="${path.dist}">
+				<include name="**/*.jar"/>
+			</fileset>
+		</copy>
+		<jar destFile="${path.dist.signed}/${nativelib}" basedir="${path.libexec}" includes="${nativelib}"/>
+		<signjar keystore="${keystore}" alias="${keystore.alias}" storepass="${keystore.pass}">
+			<fileset dir="${path.dist.signed}">
+				<include name="**/*"/>
+			</fileset>
+		</signjar>
+		<jnlp codebase="${codebase}" href="${proj.name}.jnlp" toFile="${proj.name}.jnlp">
+			<information>
+				<title>${proj.name}</title>
+				<vendor>${vendor}</vendor>
+				<homepage href="${homepage}"/>
+				<icon href="${icon}"/>
+				<icon href="${logo}" kind="splash"/>
+				<description>${description}</description>
+				<description kind="tooltip">${description}</description>
+				<offline_allowed/>
+			</information>
+			<security>
+				<all_permissions/>
+			</security>
+			<resources os="Windows">
+				<j2se version="1.4+"/>
+				<fileset dir="${path.dist.signed}">
+					<include name="**/*.jar"/>
+					<include name="**/*.dll"/>
+				</fileset>
+			</resources>
+			<application_desc main_class="${proj.run}"/>
+		</jnlp>
+	</target>
+	<target name="ftp" depends="build" description="Upload the files">
+		<ftp server="${ftp.server}" userid="${ftp.userid}" remotedir="${ftp.remotedir}" password="${ftp.password}">
+			<fileset dir="${path.dist.signed}">
+				<include name="**/*.jar"/>
+				<include name="**/*.dll"/>
+			</fileset>
+			<fileset file="${proj.name}.jnlp"/>
+			<fileset dir="${path.images}"/>
+		</ftp>
+	</target>
+	<target name="clean" depends="init" description="Removes jars">
+		<delete quiet="true" includeEmptyDirs="true">
+			<fileset dir="${path.dist.signed}" includes="*,*/**"/>
+		</delete>
+	</target>
+</project>

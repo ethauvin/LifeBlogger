@@ -1,0 +1,11 @@
+build/**
+dist/**
+dist-signed/**
+DevSuite/**
+build
+dist
+dist-signed
+DevSuite
+buildnum.properties
+keystore.properties
+ftp.properties

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dialog name="alert" icon="/icon/help.gif" text="Error Message" modal="true" columns="2" top="8" left="8" bottom="8" right="8" gap="8">
+	<label icon="/icon/error.gif" valign="top"/>
+	<textarea wrap="true" editable="false" border="false" name="message" columns="45" rows="4" start="-1" end="-1"/>
+	<button text="Close" colspan="2" halign="center" action="closeDialog(alert)"/>
+</dialog>

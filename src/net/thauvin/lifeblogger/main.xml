@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel name="mainpanel" columns="1">
+	<menubar weightx="1">
+		<menu text="File" mnemonic="0">
+			<menuitem text="Exit" action="exit()" icon="/icon/exit.gif" mnemonic="1"/>
+		</menu>
+		<menu text="Blog" mnemonic="0">
+			<checkboxmenuitem name="ftp" text="Via FTP" group="via" mnemonic="4" action="setAction(this.name)"/>
+			<checkboxmenuitem name="mv" text="Via MetaWeblog" group="via" mnemonic="4" action="setAction(this.name)"/>
+		</menu>
+		<menu text="Help" mnemonic="0">
+			<menuitem text="About" action="about()" icon="/icon/about.gif" mnemonic="0"/>
+		</menu>
+	</menubar>
+	<panel gap="4" top="3" left="3" bottom="3" right="3" columns="1" weighty="1">
+
+		<table name="table" weightx="1" weighty="1" init="addTableRows(thinlet, table, btns)" action="toggleButton(this, blogbtn)">
+			<header>
+				<column text="Name" width="270"/>
+				<column text="Date"/>
+			</header>
+		</table>
+		<panel name="btns" gap="4" halign="right" colspan="2" weightx="1">
+			<label name="favslbl"/>
+			<button name="refreshbtn" text="Refresh" icon="/icon/refresh.gif" action="updateTable(thinlet, table, btns)"/>
+			<button name="blogbtn" text="Blog" icon="/icon/go.gif" enabled="false" action="blog(table)"/>
+		</panel>
+	</panel>
+</panel>

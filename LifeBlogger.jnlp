@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://www.thauvin.net/erik/download/lifeblogger/" href="LifeBlogger.jnlp">
+	<information>
+		<title>LifeBlogger</title>
+		<vendor>Erik C. Thauvin</vendor>
+		<homepage href="http://www.thauvin.net/erik/lifeblogger/"/>
+		<description>Posts your Lifeblog favorites to your blog</description>
+		<description kind="tooltip">Posts your Lifeblog favorites to your blog</description>
+		<icon href="icon64.gif"/>
+		<icon href="logo.gif" kind="splash"/>
+		<offline-allowed/>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources os="Windows">
+		<j2se version="1.4+"/>
+		<jar href="LifeBlogger.jar"/>
+		<jar href="commons-net-1.2.2.jar"/>
+		<jar href="sqlite.jar"/>
+		<jar href="thinlet.jar"/>
+		<nativelib href="sqlite_jni.dll"/>
+	</resources>
+	<application-desc main-class="net.thauvin.lifeblogger.LifeBlogger"/>
+</jnlp>

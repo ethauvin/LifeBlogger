@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dialog name="dialog" icon="/icon/info.gif" text="About" modal="true"
+	columns="1" top="8" left="8" bottom="8" right="8" gap="8">
+	<label alignment="center" weightx="1" background="#FFFFFF" foreground="#FFFFFF" icon="/icon/logo.gif"/>
+	<panel top="4" columns="1" left="8" bottom="0" gap="0" right="8">
+		<label alignment="left" weightx="1" text="Written by Erik C. Thauvin"/>
+	</panel>
+	<panel top="0" columns="1" left="8" bottom="0" gap="0" right="8">
+		<label alignment="left" weightx="1" text="Based on a concept developed by:"/>
+	</panel>
+	<panel top="0" columns="1" left="32" bottom="0" gap="0" right="8">
+		<label alignment="left" weightx="1" text="Russell Beattie"/>
+		<label alignment="left" weightx="1" text="Matt Croydon"/>
+		<label alignment="left" weightx="1" text="and Erik C. Thauvin"/>
+	</panel>
+	<panel top="0" columns="1" left="8" bottom="0" gap="0" right="8">
+		<label alignment="left" weightx="1" text="Logo made by Russell Beattie"/>
+	</panel>
+	<panel top="0" columns="1" left="8" bottom="4" gap="0" right="8">
+		<label alignment="center" weightx="1" icon="/icon/thinlet.gif"/>
+	</panel>
+	<separator/>
+	<panel top="0" columns="1" left="8" bottom="0" right="8" gap="0" halign="center">
+		<label name="version" alignment="center"/>
+		<label name="date" alignment="center"/>
+	</panel>
+	<button text="Close" halign="center" action="closeDialog(dialog)"/>
+</dialog>
