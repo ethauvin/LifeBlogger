@@ -4,6 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>LifeBlogger</title>
 <link rel="stylesheet" href="images/styles.css">
+<SCRIPT LANGUAGE="Javascript">
+var javawsInstalled = 0;
+isIE = "false";
+if (navigator.userAgent.indexOf("Gecko") != -1)
+{
+	javawsInstalled = 1;
+}
+else if (navigator.mimeTypes && navigator.mimeTypes.length) {
+x = navigator.mimeTypes['application/x-java-jnlp-file'];
+if (x) javawsInstalled = 1;
+} else { 
+isIE = "true";
+}
+
+function insertLink(url) {
+if (javawsInstalled) {
+document.write("<form action=\"" + url + "\" method=\"GET\"><input type=\"submit\" value=\"Launch\" align=\"right\"></form>");
+} else {
+document.write("<form action=\"http://www.java.com/\" method=\"GET\"><input type=\"submit\" value=\"Install Web Start\" align=\"right\"></form>");
+}
+}   
+</SCRIPT>
+<SCRIPT LANGUAGE="VBScript">
+on error resume next
+If isIE = "true" Then
+If Not(IsObject(CreateObject("JavaWebStart.IsInstalled"))) Then
+javawsInstalled = 0
+Else
+javawsInstalled = 1
+End If
+End If
+</SCRIPT>
 </head>
 <body leftmargin="0" topmargin="0" alink="#0033cc" bgcolor="#ffffff" link="#0033cc" marginheight="0" marginwidth="0" text="#000000" vlink="#800080">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="738">
@@ -19,8 +51,7 @@
       <td colspan="2" bgcolor="#ffffff" height="5" valign="top"><img src="images/1x1trans.gif" border="0" height="5" width="1"></td>
     </tr>
     <tr>
-      <td colspan="2" align="left" valign="top"><!-- ### start of main content ### -->
-        <table border="0" cellpadding="0" cellspacing="0">
+      <td colspan="2" align="left" valign="top"><table border="0" cellpadding="0" cellspacing="0">
           <tbody>
             <tr>
               <td align="left" height="8" valign="top" width="487"><img src="images/main_shadow1.gif" alt="" border="0" height="8" width="487"></td>
@@ -79,13 +110,19 @@
                     </tr>
                     <tr>
                       <td><p><span class="Blue12pxBold">Web Start</span> <br>
-                          If you have <a href="http://www.java.com/">Web Start</a> installed, you can run LifeBlogger right away. <a href="http://www.thauvin.net/erik/download/lifeblogger/LifeBlogger.jnlp">&#187;</a></p>
+                          If you have <a href="http://www.java.com/">Web Start</a> installed, you can run LifeBlogger right away.</p>
+                        <div align="center">
+                          <script type="text/javascript">insertLink('http://www.thauvin.net/erik/download/lifeblogger/LifeBlogger.jnlp');</script>
+                        </div>
+                        <span class="Grey10px">Requirements</span><br>
+                        <span class="Grey10px"><a href="http://www.nokia.com/lifeblog/">Nokia Lifeblog</a> (Windows only)<br>
+                        <a href="http://www.java.com/">Java 1.4</a></span><br>
                         <p><span class="Blue12pxBold">Source</span><br>
                           You can also download the latest source archive. <a href="http://www.thauvin.net/erik/download/lifeblogger/LifeBlogger-src.zip">&#187;</a></p>
                         <p><span class="Blue12pxBold">CVS</span><br>
                           Or browse/download the source code from CVS. <a href="http://cvs.thauvin.net/java/LifeBlogger/">&#187;</a></p>
                         <p><span class="Blue12pxBold">Screenshots</span><br>
-                          Still not convinced? Try <a href="images/shot1.jpg">here</a> and <a href="images/shot2.jpg">here</a>. </p></td>
+                          Still not convinced? Try <a href="images/shot1.jpg">here</a> and <a href="images/shot2.jpg">here</a>.</p></td>
                     </tr>
                   </tbody>
                 </table></td>
