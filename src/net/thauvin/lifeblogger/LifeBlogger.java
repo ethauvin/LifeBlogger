@@ -40,17 +40,18 @@ import thinlet.FrameLauncher;
 import thinlet.Thinlet;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import java.io.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 import java.text.SimpleDateFormat;
 
 import java.util.Properties;
+
+import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
@@ -225,66 +226,74 @@ public class LifeBlogger extends Thinlet
 			}
 		}
 
-		final Connection con = DriverManager.getConnection(JDBC_PREFIX + _homeDir.getAbsolutePath() + DATABASE);
+		Connection con = null;
+		Statement st = null;
+		ResultSet rs = null;
 
-		final Statement st = con.createStatement();
-		final ResultSet rs =
-			st.executeQuery("SELECT * FROM HooverObject WHERE MobileFavourite = 'true' ORDER BY TimeStamp DESC");
-
-		Object row;
-		Object cell;
-		String ts;
-		String name;
-
-		boolean first = true;
-		int found = 0;
-
-		while (rs.next())
+		try
 		{
-			ts = rs.getString("TimeStamp");
-			name = rs.getString("name");
+			con = DriverManager.getConnection(JDBC_PREFIX + _homeDir.getAbsolutePath() + DATABASE);
 
-			row = Thinlet.create("row");
+			st = con.createStatement();
+			rs = st.executeQuery("SELECT * FROM HooverObject WHERE MobileFavourite = 'true' ORDER BY TimeStamp DESC");
 
-			cell = Thinlet.create("cell");
-			thinlet.setString(cell, "text", name);
+			Object row;
+			Object cell;
+			String ts;
+			String name;
 
-			if (name.toLowerCase().endsWith("jpg"))
+			boolean first = true;
+			int found = 0;
+
+			while (rs.next())
 			{
-				thinlet.setIcon(cell, "icon", getIcon("/icon/image.gif"));
+				ts = rs.getString("TimeStamp");
+				name = rs.getString("name");
+
+				row = Thinlet.create("row");
+
+				cell = Thinlet.create("cell");
+				thinlet.setString(cell, "text", name);
+
+				if (name.toLowerCase().endsWith("jpg"))
+				{
+					thinlet.setIcon(cell, "icon", getIcon("/icon/image.gif"));
+				}
+				else if (name.toLowerCase().endsWith("3gp"))
+				{
+					thinlet.setIcon(cell, "icon", getIcon("/icon/movie.gif"));
+				}
+				else
+				{
+					thinlet.setIcon(cell, "icon", getIcon("/icon/text.gif"));
+				}
+
+				thinlet.putProperty(cell, "oid", rs.getString("HooverObjectID"));
+				thinlet.add(row, cell);
+
+				cell = Thinlet.create("cell");
+				thinlet.setString(cell, "text", ts.substring(0, ts.lastIndexOf(':')));
+				thinlet.add(row, cell);
+
+				if (first)
+				{
+					thinlet.setBoolean(row, "selected", true);
+					first = false;
+				}
+
+				thinlet.add(table, row);
+
+				found++;
 			}
-			else if (name.toLowerCase().endsWith("3gp"))
-			{
-				thinlet.setIcon(cell, "icon", getIcon("/icon/movie.gif"));
-			}
-			else
-			{
-				thinlet.setIcon(cell, "icon", getIcon("/icon/text.gif"));
-			}
 
-			thinlet.putProperty(cell, "oid", rs.getString("HooverObjectID"));
-			thinlet.add(row, cell);
-
-			cell = Thinlet.create("cell");
-			thinlet.setString(cell, "text", ts.substring(0, ts.lastIndexOf(':')));
-			thinlet.add(row, cell);
-
-			if (first)
-			{
-				thinlet.setBoolean(row, "selected", true);
-				first = false;
-			}
-
-			thinlet.add(table, row);
-
-			found++;
+			thinlet.setString(find(buttonsPanel, "favslbl"), "text", "Favorites: " + found);
 		}
-
-		thinlet.setString(find(buttonsPanel, "favslbl"), "text", "Favorites: " + found);
-
-		st.close();
-		rs.close();
-		con.close();
+		finally
+		{
+			st.close();
+			rs.close();
+			con.close();
+		}
 
 		toggleButton(table, find(buttonsPanel, "blogbtn"));
 	}
@@ -304,30 +313,21 @@ public class LifeBlogger extends Thinlet
 		if (selected != -1)
 		{
 			final Object row = getItem(table, selected);
-			final String name = String.valueOf(getProperty(getItem(row, 0), "oid"));
+			final String oid = String.valueOf(getProperty(getItem(row, 0), "oid"));
 
-			final Connection con = DriverManager.getConnection(JDBC_PREFIX + _homeDir.getAbsolutePath() + DATABASE);
+			final String[] info = fileInfo(oid);
 
-			final Statement st = con.createStatement();
-			final ResultSet rs = st.executeQuery("SELECT * FROM BinaryItem WHERE HooverObjectID = " + name);
-
-			if (rs.next())
+			if (info[0].length() > 0)
 			{
 				if ("ftp".equals(_action))
 				{
-					ftpDialog(_homeDir.getAbsolutePath() + "\\DataStore" + rs.getString("Pathname") +
-							  rs.getString("Filename"));
+					ftpDialog(info[1]);
 				}
 				else
 				{
-					mwDialog(_homeDir.getAbsolutePath() + "\\DataStore" + rs.getString("Pathname") +
-							 rs.getString("Filename"), rs.getString("ObjectMimeType"));
+					mwDialog(info[1], info[2]);
 				}
 			}
-
-			st.close();
-			rs.close();
-			con.close();
 		}
 	}
 
@@ -485,6 +485,76 @@ public class LifeBlogger extends Thinlet
 	}
 
 	/**
+	 * Previews a JPEG image.
+	 *
+	 * @param table The data table.
+	 *
+	 * @throws Exception If an error occurs while previewing the image.
+	 */
+	public final void preview(Object table)
+				 throws Exception
+	{
+		final int selected = getSelectedIndex(table);
+
+		if (selected != -1)
+		{
+			final Object row = getItem(table, selected);
+			final String oid = String.valueOf(getProperty(getItem(row, 0), "oid"));
+
+			final String[] info = fileInfo(oid);
+
+			if (info[0].length() > 0)
+			{
+				if ((info[2].length() > 0) && info[2].endsWith("jpeg"))
+				{
+					// Retrieve	the jpg	image
+					final BufferedImage in = ImageIO.read(new File(info[1]));
+
+					final int maxDim = 200;
+
+					final int height = in.getHeight();
+					final int width = in.getWidth();
+
+					// Determine the scale.
+					double scale = (double) maxDim / (double) height;
+
+					if (in.getWidth() > in.getHeight())
+					{
+						scale = (double) maxDim / (double) width;
+					}
+
+					int scaledW = (int) (scale * (double) width);
+					int scaledH = (int) (scale * (double) height);
+
+					// Set the scale.
+					final AffineTransform tx = new AffineTransform();
+
+					if (scale <= 1.0d)
+					{
+						tx.scale(scale, scale);
+					}
+					else
+					{
+						scaledW = width;
+						scaledH = height;
+					}
+
+					final BufferedImage out = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
+
+					final Graphics2D g2d = out.createGraphics();
+					g2d.drawImage(in, tx, null);
+					g2d.dispose();
+
+					final Object preview = parse("preview.xml");
+					setString(preview, "text", info[0]);
+					setIcon(find(preview, "image"), "icon", out);
+					add(preview);
+				}
+			}
+		}
+	}
+
+	/**
 	 * Displays an exception stacktrace.
 	 *
 	 * @param thr The exception.
@@ -532,6 +602,50 @@ public class LifeBlogger extends Thinlet
 		{
 			e.printStackTrace();
 		}
+	}
+
+	// Returns an array containg the file name, location and mime type.
+	private String[] fileInfo(String objectID)
+					   throws SQLException
+	{
+		final String[] info = new String[] { "", "", "" };
+		Connection con = null;
+		Statement st = null;
+		ResultSet rs = null;
+
+		try
+		{
+			con = DriverManager.getConnection(JDBC_PREFIX + _homeDir.getAbsolutePath() + DATABASE);
+
+			st = con.createStatement();
+			rs = st.executeQuery("SELECT * FROM BinaryItem WHERE HooverObjectID = " + objectID);
+
+			if (rs.next())
+			{
+				info[0] = rs.getString("Filename");
+				info[1] = _homeDir.getAbsolutePath() + "\\DataStore" + rs.getString("Pathname") + info[0];
+				info[2] = rs.getString("ObjectMimeType");
+			}
+		}
+		finally
+		{
+			if (st != null)
+			{
+				st.close();
+			}
+
+			if (rs != null)
+			{
+				rs.close();
+			}
+
+			if (con != null)
+			{
+				con.close();
+			}
+		}
+
+		return info;
 	}
 
 	// Display the FTP dialog.

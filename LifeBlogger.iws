@@ -51,9 +51,9 @@
     <option name="SHOW_CHANGES_REVISION_SETTINGS">
       <value>
         <option name="BRANCH" value="" />
-        <option name="DATE" value="" />
+        <option name="DATE" value="Thu Jul 22 16:32:00 2004" />
         <option name="USE_BRANCH" value="false" />
-        <option name="USE_DATE" value="false" />
+        <option name="USE_DATE" value="true" />
       </value>
     </option>
     <option name="SHOW_OUTPUT" value="false" />
@@ -71,7 +71,7 @@
     <option name="PUT_FOCUS_INTO_COMMENT" value="true" />
     <option name="SHOW_CHECKIN_OPTIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added licenses." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added password encoding." />
     <option name="SAVE_LAST_COMMIT_MESSAGE" value="true" />
     <option name="CHECKIN_DIALOG_SPLITTER_PROPORTION" value="0.8" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
@@ -112,10 +112,19 @@
     <option name="HIDE_WARNINGS" value="false" />
   </component>
   <component name="FileEditorManager" split-orientation="vertical" split-proportion="0.5">
-    <first-group selected-file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeMediaObject.java">
+    <first-group selected-file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/preview.xml">
       <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeMediaObject.java" pinned="false">
         <provider selected="true" editor-type-id="text-editor">
-          <state line="117" column="43" selection-start="3715" selection-end="3715" vertical-scroll-proportion="2.4542253">
+          <state line="116" column="25" selection-start="3769" selection-end="3769" vertical-scroll-proportion="0.18348624">
+            <folding>
+              <element signature="imports" expanded="true" />
+            </folding>
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeFTP.java" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="85" column="26" selection-start="2912" selection-end="2912" vertical-scroll-proportion="1.559633">
             <folding>
               <element signature="imports" expanded="true" />
             </folding>
@@ -124,7 +133,44 @@
       </entry>
       <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeBlogger.java" pinned="false">
         <provider selected="true" editor-type-id="text-editor">
-          <state line="543" column="85" selection-start="13608" selection-end="13608" vertical-scroll-proportion="0.346831">
+          <state line="503" column="27" selection-start="12296" selection-end="12296" vertical-scroll-proportion="0.18348624">
+            <folding>
+              <element signature="imports" expanded="true" />
+            </folding>
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/about.xml" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="1" column="38" selection-start="77" selection-end="77" vertical-scroll-proportion="0.03119266">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/alert.xml" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/preview.xml" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="1" column="40" selection-start="79" selection-end="79" vertical-scroll-proportion="0.03119266">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/main.xml" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="16" column="154" selection-start="844" selection-end="844" vertical-scroll-proportion="0.49908257">
+            <folding />
+          </state>
+        </provider>
+      </entry>
+      <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeBlog.java" pinned="false">
+        <provider selected="true" editor-type-id="text-editor">
+          <state line="54" column="22" selection-start="2096" selection-end="2096" vertical-scroll-proportion="0.38715595">
             <folding>
               <element signature="imports" expanded="true" />
             </folding>
@@ -133,14 +179,14 @@
       </entry>
       <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/ReleaseInfo.java" pinned="false">
         <provider selected="true" editor-type-id="text-editor">
-          <state line="28" column="53" selection-start="795" selection-end="795" vertical-scroll-proportion="0.19894366">
+          <state line="28" column="53" selection-start="795" selection-end="795" vertical-scroll-proportion="0.19266056">
             <folding />
           </state>
         </provider>
       </entry>
       <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeMediaObjResponse.java" pinned="false">
         <provider selected="true" editor-type-id="text-editor">
-          <state line="54" column="19" selection-start="2104" selection-end="2104" vertical-scroll-proportion="0.346831">
+          <state line="146" column="75" selection-start="4148" selection-end="4148" vertical-scroll-proportion="0.5743119">
             <folding>
               <element signature="imports" expanded="true" />
             </folding>
@@ -163,14 +209,14 @@
   <component name="J2EEProjectPane" />
   <component name="NamedScopeManager" />
   <component name="PackagesPane">
-    <expanded_node url="" module="LifeBlogger" type="module" />
-    <expanded_node url="net.thauvin.lifeblogger" module="LifeBlogger" type="package" />
-    <expanded_node url="net.thauvin" module="LifeBlogger" type="package" />
     <expanded_node url="net" module="LifeBlogger" type="package" />
+    <expanded_node url="net.thauvin" module="LifeBlogger" type="package" />
+    <expanded_node url="net.thauvin.lifeblogger" module="LifeBlogger" type="package" />
+    <expanded_node url="" module="LifeBlogger" type="module" />
   </component>
   <component name="ProjectPane">
-    <expanded_node url="" module="LifeBlogger" type="module" />
     <expanded_node url="file://$PROJECT_DIR$" module="LifeBlogger" type="directory" />
+    <expanded_node url="" module="LifeBlogger" type="module" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" splitterProportion="0.5">
@@ -211,20 +257,6 @@
         <value defaultName="wholeProject" />
       </option>
     </configuration>
-    <configuration selected="false" default="true" type="WebLogic Instance" factoryName="Local">
-      <option name="WORKING_DIRECTORY" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="7001" />
-      <option name="LOCAL" value="true" />
-      <option name="OPEN_IN_BROWSER" value="true" />
-      <option name="OPEN_IN_BROWSER_URL" value="/" />
-      <option name="COMMON_VM_ARGUMENTS" value="" />
-      <option name="DOMAIN_PATH" value="" />
-      <option name="USER" value="weblogic" />
-      <option name="PASSWORD" value="weblogic" />
-      <option name="SERVER_NAME" value="myserver" />
-      <option name="DOMAIN_NAME" value="mydomain" />
-    </configuration>
     <configuration selected="false" default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -238,6 +270,20 @@
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <module name="" />
+    </configuration>
+    <configuration selected="false" default="true" type="WebLogic Instance" factoryName="Local">
+      <option name="WORKING_DIRECTORY" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="7001" />
+      <option name="LOCAL" value="true" />
+      <option name="OPEN_IN_BROWSER" value="true" />
+      <option name="OPEN_IN_BROWSER_URL" value="/" />
+      <option name="COMMON_VM_ARGUMENTS" value="" />
+      <option name="DOMAIN_PATH" value="" />
+      <option name="USER" value="weblogic" />
+      <option name="PASSWORD" value="weblogic" />
+      <option name="SERVER_NAME" value="myserver" />
+      <option name="DOMAIN_NAME" value="mydomain" />
     </configuration>
     <configuration selected="false" default="true" type="Applet" factoryName="Applet">
       <module name="" />
@@ -255,14 +301,14 @@
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <module name="LifeBlogger" />
-      <RunnerSettings RunnerId="Run" />
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="1127" />
         <option name="TRANSPORT" value="0" />
         <option name="LOCAL" value="false" />
       </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Run" />
+      <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
     </configuration>
   </component>
   <component name="SelectInManager" />
@@ -318,14 +364,14 @@
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33024693" order="8" />
       <window_info id="Regex" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33024693" order="9" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="7" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.21734694" order="0" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.24795918" order="0" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33024693" order="1" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="1" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33024693" order="10" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.39969134" order="6" x="66" y="104" width="924" height="583" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="11" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="true" weight="0.13163266" order="1" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33024693" order="2" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33796296" order="2" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.25" order="2" />
       <window_info id="CVS File View" active="false" anchor="right" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.33" order="3" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="docked" type="docked" visible="false" weight="0.39969134" order="4" />
@@ -433,34 +479,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/j2sdk1.4.2_05/src.zip!/java/util/prefs/AbstractPreferences.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="614" column="24" selection-start="27794" selection-end="27794" vertical-scroll-proportion="0.37922078">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/j2sdk1.4.2_05/src.zip!/java/util/prefs/Base64.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="26" selection-start="1053" selection-end="1053" vertical-scroll-proportion="0.42079207">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/thinlet.jar!/thinlet/Thinlet.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="438" column="0" selection-start="14804" selection-end="14804" vertical-scroll-proportion="0.4293948">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/about.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="38" selection-start="77" selection-end="77" vertical-scroll-proportion="0.046961326">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/transfer.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="135" selection-start="174" selection-end="174" vertical-scroll-proportion="0.048991356">
@@ -489,34 +507,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeBlog.java">
+    <entry file="jar://C:/j2sdk1.4.2_05/src.zip!/java/sql/ResultSet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="22" selection-start="2096" selection-end="2096" vertical-scroll-proportion="0.26903552">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="437" column="11" selection-start="19743" selection-end="19743" vertical-scroll-proportion="9.399657">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeFTP.java">
+    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/alert.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="26" selection-start="2912" selection-end="2912" vertical-scroll-proportion="0.26903552">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/about.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="38" selection-start="77" selection-end="77" vertical-scroll-proportion="0.03119266">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/preview.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="40" selection-start="79" selection-end="79" vertical-scroll-proportion="0.03119266">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="41" selection-start="287" selection-end="287" vertical-scroll-proportion="0.32162163">
+        <state line="16" column="154" selection-start="844" selection-end="844" vertical-scroll-proportion="0.49908257">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeMediaObject.java">
+    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeBlog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="43" selection-start="3715" selection-end="3715" vertical-scroll-proportion="2.4542253">
+        <state line="54" column="22" selection-start="2096" selection-end="2096" vertical-scroll-proportion="0.38715595">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeMediaObjResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="146" column="75" selection-start="4148" selection-end="4148" vertical-scroll-proportion="0.5743119">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -525,23 +562,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/ReleaseInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="53" selection-start="795" selection-end="795" vertical-scroll-proportion="0.19894366">
+        <state line="28" column="53" selection-start="795" selection-end="795" vertical-scroll-proportion="0.19266056">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeMediaObjResponse.java">
+    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeBlogger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="19" selection-start="2104" selection-end="2104" vertical-scroll-proportion="0.346831">
+        <state line="503" column="27" selection-start="12296" selection-end="12296" vertical-scroll-proportion="0.18348624">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeBlogger.java">
+    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeMediaObject.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="543" column="85" selection-start="13608" selection-end="13608" vertical-scroll-proportion="0.346831">
+        <state line="116" column="25" selection-start="3769" selection-end="3769" vertical-scroll-proportion="0.18348624">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/thauvin/lifeblogger/LifeFTP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="26" selection-start="2912" selection-end="2912" vertical-scroll-proportion="1.559633">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -14,7 +14,7 @@
 	</menubar>
 	<panel gap="4" top="3" left="3" bottom="3" right="3" columns="1" weighty="1">
 
-		<table name="table" weightx="1" weighty="1" init="addTableRows(thinlet, table, btns)" action="toggleButton(this, blogbtn)">
+		<table name="table" weightx="1" weighty="1" init="addTableRows(thinlet, table, btns)" action="toggleButton(this, blogbtn)" perform="preview(this)">
 			<header>
 				<column text="Name" width="270"/>
 				<column text="Date"/>

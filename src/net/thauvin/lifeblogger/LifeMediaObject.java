@@ -91,7 +91,9 @@ public class LifeMediaObject extends LifeBlog
 	public final void run()
 	{
 		FileInputStream fis = null;
-		final BufferedReader input = null;
+		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
+		Base64.OutputStream out = null;
 
 		try
 		{
@@ -104,31 +106,23 @@ public class LifeMediaObject extends LifeBlog
 				throw new IOException("Unsupported URL protocol: " + url.getProtocol());
 			}
 
-			// The following is a little hackish.
-			// A better way would be to generate the request to a temporary file.
-			final long len = getFile().length();
-
-			if (len > Integer.MAX_VALUE)
-			{
-				throw new IOException("Sorry. The file is too large.");
-			}
+			final File tmpFile = File.createTempFile(ReleaseInfo.getProject(), ".b64");
+			tmpFile.deleteOnExit();
 
 			fis = new FileInputStream(getFile());
+			fos = new FileOutputStream(tmpFile);
+			bos = new BufferedOutputStream(fos);
+			out = new Base64.OutputStream(bos, Base64.ENCODE | Base64.DONT_BREAK_LINES);
 
-			final byte[] bytes = new byte[(int) getFile().length()];
+			final byte[] buf = new byte[1024];
+			int len;
 
-			int offset = 0;
-			int numRead = 0;
-
-			while ((offset < bytes.length) && ((numRead = fis.read(bytes, offset, bytes.length - offset)) >= 0))
+			while ((len = fis.read(buf)) > 0)
 			{
-				offset += numRead;
+				out.write(buf, 0, len);
 			}
 
-			if (offset < bytes.length)
-			{
-				throw new IOException("Could not completely read file: " + getFile().getName());
-			}
+			fis.close();
 
 			final StringBuffer start =
 				new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>metaWeblog.newMediaObject</methodName><params><param><value><string>").append(_blogID)
@@ -137,7 +131,6 @@ public class LifeMediaObject extends LifeBlog
 																																					   .append("</string></value></param><param><value><string>")
 																																					   .append(getPassword())
 																																					   .append("</string></value></param><param><value><struct><member><name>bits</name><value><base64>");
-			final String bits = Base64.encodeBytes(bytes);
 
 			final StringBuffer end =
 				new StringBuffer("</base64></value></member><member><name>name</name><value><string>").append(getFilename())
@@ -149,18 +142,28 @@ public class LifeMediaObject extends LifeBlog
 			urlConn.setDoInput(true);
 			urlConn.setDoOutput(true);
 			urlConn.setUseCaches(false);
-			urlConn.setRequestProperty("Content-Length", String.valueOf(start.length() + bits.length() + end.length()));
+			urlConn.setRequestProperty("Content-Length",
+									   String.valueOf(start.length() + tmpFile.length() + end.length()));
 			urlConn.setRequestProperty("Content-Type", "text/xml");
 
-			final DataOutputStream output = new DataOutputStream(urlConn.getOutputStream());
-			output.write(start.toString().getBytes());
-			output.flush();
-			output.write(bits.getBytes());
-			output.flush();
-			output.write(end.toString().getBytes());
-			output.flush();
+			final DataOutputStream dos = new DataOutputStream(urlConn.getOutputStream());
+			dos.write(start.toString().getBytes());
+			dos.flush();
 
-			output.close();
+			fis = new FileInputStream(tmpFile);
+
+			while ((len = fis.read(buf)) > 0)
+			{
+				dos.write(buf, 0, len);
+				dos.flush();
+			}
+
+			fis.close();
+
+			dos.write(end.toString().getBytes());
+			dos.flush();
+
+			dos.close();
 
 			final LifeMediaObjResponse xmlrpc = new LifeMediaObjResponse(urlConn.getInputStream());
 
@@ -188,23 +191,47 @@ public class LifeMediaObject extends LifeBlog
 		}
 		finally
 		{
-			if (input != null)
-			{
-				try
-				{
-					input.close();
-				}
-				catch (IOException e)
-				{
-					; // Do nothing
-				}
-			}
-
 			if (fis != null)
 			{
 				try
 				{
 					fis.close();
+				}
+				catch (IOException ignore)
+				{
+					; // Do nothing
+				}
+			}
+
+			if (bos != null)
+			{
+				try
+				{
+					bos.close();
+				}
+				catch (IOException ignore)
+				{
+					; // Do nothing
+				}
+			}
+
+			if (fos != null)
+			{
+				try
+				{
+					fos.close();
+				}
+				catch (IOException ignore)
+				{
+					; // Do nothing
+				}
+			}
+
+			if (out != null)
+			{
+				try
+				{
+					out.close();
 				}
 				catch (IOException ignore)
 				{
