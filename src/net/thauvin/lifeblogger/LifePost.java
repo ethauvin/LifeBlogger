@@ -1,5 +1,5 @@
 /*
- * @(#)LifeMediaObject.java
+ * @(#)LifePost.java
  *
  * Copyright (c) 2004, Erik C. Thauvin (http://www.thauvin.net/erik/)
  * All rights reserved.
@@ -44,7 +44,7 @@ import java.net.URLConnection;
 
 
 /**
- * The <code>LifePostObject</code> class posts a new blog entry using the blogger.newPost() XML-RPC method.
+ * The <code>LifePost</code> class posts a new blog entry using the blogger.newPost() XML-RPC method.
  *
  * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
