@@ -1,5 +1,5 @@
 /* Created by JReleaseInfo AntTask from Open Source Competence Group */
-/* Creation date Sat Jul 24 07:57:19 PDT 2004 */
+/* Creation date Sat Jul 24 07:59:45 PDT 2004 */
 package net.thauvin.lifeblogger;
 
 import java.util.Date;
@@ -12,21 +12,21 @@ import java.util.Date;
 public class ReleaseInfo {
 
 
-   /** buildDate (set during build process to 1090681039640L). */
-   private static Date buildDate = new Date(1090681039640L);
+   /** buildDate (set during build process to 1090681185796L). */
+   private static Date buildDate = new Date(1090681185796L);
 
    /**
-    * Get buildDate (set during build process to Sat Jul 24 07:57:19 PDT 2004).
+    * Get buildDate (set during build process to Sat Jul 24 07:59:45 PDT 2004).
     * @return Date buildDate
     */
    public static final Date getBuildDate() { return buildDate; }
 
 
    /**
-    * Get buildNumber (set during build process to 110).
+    * Get buildNumber (set during build process to 111).
     * @return int buildNumber
     */
-   public static final int getBuildNumber() { return 110; }
+   public static final int getBuildNumber() { return 111; }
 
 
    /** version (set during build process to "0.1.0"). */

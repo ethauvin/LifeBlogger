@@ -117,7 +117,7 @@ public class LifePost extends LifeAction
 			dos.flush();
 			dos.close();
 
-			System.out.println(request);
+			//System.out.println(request);
 
 			final LifeRPCResponse xmlrpc = new LifeRPCResponse(urlConn.getInputStream());
 
