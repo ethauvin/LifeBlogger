@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dialog name="preview" icon="/icon/image.gif" text="Preview" columns="1" modal="true" top="8" left="8" bottom="8" right="8" gap="8">
+	<label name="image" valign="top" alignment="center"/>
+	<button text="Close" halign="center" action="closeDialog(preview)"/>
+</dialog>
