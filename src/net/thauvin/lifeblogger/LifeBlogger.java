@@ -290,9 +290,20 @@ public class LifeBlogger extends Thinlet
 		}
 		finally
 		{
-			st.close();
-			rs.close();
-			con.close();
+			if (st != null)
+			{
+				st.close();
+			}
+
+			if (rs != null)
+			{
+				rs.close();
+			}
+
+			if (con != null)
+			{
+				con.close();
+			}
 		}
 
 		toggleButton(table, find(buttonsPanel, "blogbtn"));
@@ -440,6 +451,14 @@ public class LifeBlogger extends Thinlet
 			_prefs.put("mw-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
 			_prefs.put("mw-id", blogID);
 
+			if (_prefs.getProperty("blog-host") == null)
+			{
+				_prefs.put("blog-host", host);
+				_prefs.put("blog-login", login);
+				_prefs.put("blog-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
+				_prefs.put("blog-id", blogID);
+			}
+
 			savePrefs();
 
 			closeDialog(dialog);
@@ -453,34 +472,82 @@ public class LifeBlogger extends Thinlet
 	}
 
 	/**
-	 * Toggles the given button based on the specified table selection.
+	 * Preforms the post to blog action.
 	 *
-	 * @param table The table.
-	 * @param button The button.
+	 * @param dialog The post dialog,
+	 * @param blogPanel The panel contaning the post data.
+	 *
+	 * @throws IOException If an error occurs while performing the action.
 	 */
-	public final void toggleButton(Object table, Object button)
+	public final void post(Object dialog, Object blogPanel)
+					throws IOException
 	{
-		setBoolean(button, "enabled", getSelectedIndex(table) != -1);
+		final String host = getString(find(blogPanel, "host"), "text");
+		final String blogID = getString(find(blogPanel, "blogid"), "text");
+		final String login = getString(find(blogPanel, "login"), "text");
+		final String password = getString(find(blogPanel, "password"), "text");
+		final String entry = getString(find(blogPanel, "entry"), "text");
+
+		if (host.length() <= 0)
+		{
+			alert("Please specify a XML-RPC URL.");
+		}
+		else if (login.length() <= 0)
+		{
+			alert("Please specify a login name.");
+		}
+		else if (password.length() <= 0)
+		{
+			alert("Please specify a password.");
+		}
+		else if (entry.length() <= 0)
+		{
+			alert("Please specify a post entry.");
+		}
+		else if (blogID.length() <= 0)
+		{
+			alert("Please specify a blog ID.");
+		}
+		else
+		{
+			_prefs.put("blog-host", host);
+			_prefs.put("blog-login", login);
+			_prefs.put("blog-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
+			_prefs.put("blog-id", blogID);
+
+			savePrefs();
+
+			closeDialog(dialog);
+
+			final LifePost post =
+				new LifePost(this, host, blogID, login, password, getString(find(blogPanel, "entry"), "text"));
+			post.start();
+		}
 	}
 
 	/**
-	 * Updates the table data.
+	 * Displays the post to blog dialog.
 	 *
-	 * @param thinlet The Thinlet object.
-	 * @param table The table to update.
-	 * @param buttonsPanel The panel containing the buttons/label to update.
+	 * @param url The URL pointing to the location of the media object.
+	 * @param filename DOCUMENT ME!
 	 */
-	public final void updateTable(Thinlet thinlet, Object table, Object buttonsPanel)
+	public final void postDialog(String url, String filename)
 	{
-		thinlet.removeAll(table);
-
 		try
 		{
-			addTableRows(thinlet, table, buttonsPanel);
+			final Object post = parse("post.xml");
+			setString(find(post, "host"), "text", _prefs.getProperty("blog-host", ""));
+			setString(find(post, "blogid"), "text", _prefs.getProperty("blog-id", ""));
+			setString(find(post, "login"), "text", _prefs.getProperty("blog-login", ""));
+			setString(find(post, "password"), "text", new String(Base64.decode(_prefs.getProperty("blog-password", ""))));
+			setString(find(post, "entry"), "text",
+					  "<img src=\"" + url + "\" alt=\"" + filename +
+					  "\">\n<p>via <a href=\"http://www.thauvin.net/erik/lifeblogger/\">LifeBlogger</a></p>");
+			add(post);
 		}
 		catch (Exception e)
 		{
-			showException(e);
+			e.printStackTrace();
 		}
 	}
 
@@ -492,7 +559,7 @@ public class LifeBlogger extends Thinlet
 	 * @throws Exception If an error occurs while previewing the image.
 	 */
 	public final void preview(Object table)
-				 throws Exception
+					   throws Exception
 	{
 		final int selected = getSelectedIndex(table);
 
@@ -551,6 +618,38 @@ public class LifeBlogger extends Thinlet
 					add(preview);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Toggles the given button based on the specified table selection.
+	 *
+	 * @param table The table.
+	 * @param button The button.
+	 */
+	public final void toggleButton(Object table, Object button)
+	{
+		setBoolean(button, "enabled", getSelectedIndex(table) != -1);
+	}
+
+	/**
+	 * Updates the table data.
+	 *
+	 * @param thinlet The Thinlet object.
+	 * @param table The table to update.
+	 * @param buttonsPanel The panel containing the buttons/label to update.
+	 */
+	public final void updateTable(Thinlet thinlet, Object table, Object buttonsPanel)
+	{
+		thinlet.removeAll(table);
+
+		try
+		{
+			addTableRows(thinlet, table, buttonsPanel);
+		}
+		catch (Exception e)
+		{
+			showException(e);
 		}
 	}
 
@@ -658,6 +757,7 @@ public class LifeBlogger extends Thinlet
 			setString(find(ftp, "filename"), "text", file.substring(file.lastIndexOf('\\') + 1));
 			setString(find(ftp, "host"), "text", _prefs.getProperty("host", ""));
 			setString(find(ftp, "login"), "text", _prefs.getProperty("login", "anonymous"));
+			setString(find(ftp, "path"), "text", _prefs.getProperty("path", ""));
 			setString(find(ftp, "password"), "text", new String(Base64.decode(_prefs.getProperty("password", ""))));
 			add(ftp);
 			requestFocus(find(ftp, "host"));

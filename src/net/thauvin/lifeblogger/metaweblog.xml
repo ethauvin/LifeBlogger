@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dialog name="dialog" text="Send via MetaWeblog" modal="false" columns="1" gap="4" top="4" left="4" bottom="4" right="4">
+<dialog name="dialog" icon="/icon/icon.gif" text="Send via MetaWeblog" modal="false" columns="1" gap="4" top="4" left="4" bottom="4" right="4">
 	<panel name="mw" columns="2" halign="right" gap="4">
 		<label text="File:"/><textfield name="file" columns="50" editable="false"/>
-		<label text="URL:"/><textfield name="host" start="0" end="1000"/>
+		<label text="RPC URL:"/><textfield name="host" start="0" end="1000"/>
 		<label text="Blog ID:"/><textfield name="blogid"/>
 		<label text="Login:"/><textfield name="login"/>
 		<label text="Password:"/><passwordfield name="password"/>

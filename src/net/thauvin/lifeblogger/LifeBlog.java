@@ -36,15 +36,13 @@
  */
 package net.thauvin.lifeblogger;
 
-import java.awt.*;
-
 import java.io.File;
 import java.io.IOException;
 
 
 /**
- * The <code>LifeBlog</code> abstract class provides the base functionality used by all blog ({@link LifeFTP}, {@link
- * LifeMediaObject}, etc.) actions.
+ * The <code>LifeBlog</code> abstract class provides the base functionality for file transfer-based ({@link LifeFTP},
+ * {@link LifeMediaObject}, etc.) actions.
  *
  * @author Erik C. Thauvin
  * @version $Revision$, $Date$
@@ -52,7 +50,7 @@ import java.io.IOException;
  * @created Jul 20, 2004
  * @since 1.0
  */
-public abstract class LifeBlog extends Thread
+public abstract class LifeBlog extends LifeAction
 {
 	/**
 	 * The file to upload/store.
@@ -60,34 +58,9 @@ public abstract class LifeBlog extends Thread
 	private final File _file;
 
 	/**
-	 * The Thinlet instance.
-	 */
-	private final LifeBlogger _thinlet;
-
-	/**
-	 * The Transfer dialog.
-	 */
-	private final Object _dialog;
-
-	/**
 	 * The file name.
 	 */
 	private final String _filename;
-
-	/**
-	 * The host name.
-	 */
-	private final String _host;
-
-	/**
-	 * The login name.
-	 */
-	private final String _login;
-
-	/**
-	 * The password.
-	 */
-	private final String _password;
 
 	/**
 	 * The path/location.
@@ -111,31 +84,11 @@ public abstract class LifeBlog extends Thread
 					   File file)
 				throws IOException
 	{
-		_thinlet = thinlet;
-		_dialog = getThinlet().parse("transfer.xml");
-		_host = host;
-		_login = login;
-		_password = password;
+		super(thinlet, host, login, password);
+
 		_path = path;
 		_filename = filename;
 		_file = file;
-	}
-
-	/**
-	 * Performs the action.
-	 *
-	 * @see Thread#run()
-	 */
-	public abstract void run();
-
-	/**
-	 * Returns the Transfer dialog.
-	 *
-	 * @return The dialog.
-	 */
-	protected final Object getDialog()
-	{
-		return _dialog;
 	}
 
 	/**
@@ -159,36 +112,6 @@ public abstract class LifeBlog extends Thread
 	}
 
 	/**
-	 * Returns the host name.
-	 *
-	 * @return The host.
-	 */
-	protected final String getHost()
-	{
-		return _host;
-	}
-
-	/**
-	 * Returns the login name.
-	 *
-	 * @return The login.
-	 */
-	protected final String getLogin()
-	{
-		return _login;
-	}
-
-	/**
-	 * Returns the password.
-	 *
-	 * @return The password.
-	 */
-	protected final String getPassword()
-	{
-		return _password;
-	}
-
-	/**
 	 * Returns the path/location.
 	 *
 	 * @return The path.
@@ -196,29 +119,5 @@ public abstract class LifeBlog extends Thread
 	protected final String getPath()
 	{
 		return _path;
-	}
-
-	/**
-	 * Returns the Thinlet instance.
-	 *
-	 * @return The Thinlet.
-	 */
-	protected final LifeBlogger getThinlet()
-	{
-		return _thinlet;
-	}
-
-	/**
-	 * Displays an alert message.
-	 *
-	 * @param message The message to display.
-	 */
-	protected final void alert(String message)
-	{
-		Toolkit.getDefaultToolkit().beep();
-
-		getThinlet().setIcon(getThinlet().find(getDialog(), "iconlbl"), "icon", getThinlet().getIcon("/icon/error.gif"));
-		getThinlet().setString(getThinlet().find(getDialog(), "message"), "text", message);
-		getThinlet().setBoolean(getThinlet().find(getDialog(), "closebtn"), "enabled", true);
 	}
 }

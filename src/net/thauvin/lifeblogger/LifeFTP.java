@@ -130,6 +130,7 @@ public class LifeFTP extends LifeBlog
 					else
 					{
 						getThinlet().closeDialog(getDialog());
+						getThinlet().postDialog(getPath() + (getPath().endsWith("/") ? "" : "/") + getFilename(), getFilename());
 					}
 				}
 			}

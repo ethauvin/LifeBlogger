@@ -14,7 +14,7 @@
 		<label alignment="left" weightx="1" text="and Erik C. Thauvin"/>
 	</panel>
 	<panel top="0" columns="1" left="8" bottom="0" gap="0" right="8">
-		<label alignment="left" weightx="1" text="Logo made by Russell Beattie"/>
+		<label alignment="left" weightx="1" text="LifeBlogger is open source."/>
 	</panel>
 	<panel top="0" columns="1" left="8" bottom="4" gap="0" right="8">
 		<label alignment="center" weightx="1" icon="/icon/thinlet.gif"/>

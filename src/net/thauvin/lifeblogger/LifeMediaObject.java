@@ -36,9 +36,6 @@
  */
 package net.thauvin.lifeblogger;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
-
 import java.io.*;
 
 import java.net.URL;
@@ -46,7 +43,7 @@ import java.net.URLConnection;
 
 
 /**
- * The <code>LifeMediaObject</code> class posts a new media object via the metaWeblog.newMediaObject XML-RPC call.
+ * The <code>LifeMediaObject</code> class posts a new media object via the metaWeblog.newMediaObject XML-RPC method.
  *
  * @author Erik C. Thauvin
  * @version $Revision$, $Date$
@@ -165,19 +162,12 @@ public class LifeMediaObject extends LifeBlog
 
 			dos.close();
 
-			final LifeMediaObjResponse xmlrpc = new LifeMediaObjResponse(urlConn.getInputStream());
+			final LifeRPCResponse xmlrpc = new LifeRPCResponse(urlConn.getInputStream());
 
 			if (xmlrpc.isValidResponse())
 			{
-				getThinlet().setIcon(getThinlet().find(getDialog(), "iconlbl"), "icon",
-									 getThinlet().getIcon("/icon/info.gif"));
-				getThinlet().setString(getThinlet().find(getDialog(), "message"), "text",
-									   "The file can now be accessed at:\n\n" + xmlrpc.getResponse() +
-									   "\n\nwhich has been copied to the clipboard.");
-				getThinlet().setBoolean(getThinlet().find(getDialog(), "closebtn"), "enabled", true);
-
-				final StringSelection ss = new StringSelection(xmlrpc.getResponse());
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, ss);
+				getThinlet().closeDialog(getDialog());
+				getThinlet().postDialog(xmlrpc.getResponse(), getFilename());
 			}
 			else
 			{

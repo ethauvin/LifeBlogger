@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dialog name="dialog" text="Send via FTP" modal="false" columns="1" gap="4" top="4" left="4" bottom="4" right="4">
+<dialog name="dialog" icon="/icon/icon.gif" text="Send via FTP" modal="false" columns="1" gap="4" top="4" left="4" bottom="4" right="4">
 	<panel name="ftp" columns="2" halign="right" gap="4">
 		<label text="File:"/><textfield name="file" columns="50" editable="false"/>
 		<label text="Host:"/><textfield name="host" start="0" end="1000"/>
