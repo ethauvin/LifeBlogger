@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="LifeBlogger" default="build" basedir=".">
 	<property file="${basedir}/build.properties"/>
+	<property file="${basedir}/buildnum.properties"/>
 	<property name="path.jar.build" value="${path.build}/${jar.name}"/>
 	<path id="path.source">
 		<pathelement location="${path.src}"/>
@@ -22,8 +23,7 @@
 		<mkdir dir="${path.dist}"/>
 	</target>
 	<target name="compile" depends="init" description="Compiles	sources">
-		<jreleaseinfo targetDir="${basedir}/${path.src}" className="ReleaseInfo" packageName="${proj.package}" project="${proj.name}" version="${proj.version}" buildnumfile="${basedir}/buildnum.properties" buildnumproperty="buildnum">
-		</jreleaseinfo>
+		<jreleaseinfo targetDir="${basedir}/${path.src}" className="ReleaseInfo" packageName="${proj.package}" project="${proj.name}" version="${proj.version}" buildnumfile="${basedir}/buildnum.properties" buildnumproperty="buildnum"/>
 		<mkdir dir="${path.jar.build}"/>
 		<javac sourcepathref="path.source" classpathref="path.class" destdir="${path.jar.build}" debug="off" deprecation="on">
 			<src refid="path.source"/>
@@ -37,7 +37,7 @@
 		<jar destfile="${basedir}/${path.dist}/${jar.name}.jar" basedir="${path.jar.build}" excludes="**/.dependency-info/**"/>
 	</target>
 	<target name="src" description="Builds the source archive">
-		<zip zipfile="${path.dist}/${jar.name}-src.zip">
+		<zip zipfile="${path.dist}/${jar.name}-${proj.version}.${build.num.last}.-src.zip">
 			<zipfileset dir="${basedir}" prefix="${jar.name}" defaultexcludes="yes" excludesfile="${basedir}/.cvsignore"/>
 		</zip>
 	</target>
