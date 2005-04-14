@@ -11,7 +11,7 @@
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/webstart.xml">
       <additionalClassPath />
-      <antReference name="Local Ant" />
+      <antReference name="Apache Ant version 1.6.2" />
       <customJdkName value="" />
       <maximumHeapSize value="128" />
       <properties />

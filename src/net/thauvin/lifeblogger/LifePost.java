@@ -36,50 +36,51 @@
  */
 package net.thauvin.lifeblogger;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-
-import java.net.URL;
-import java.net.URLConnection;
 
 
 /**
  * The <code>LifePost</code> class posts a new blog entry using the blogger.newPost() XML-RPC method.
  *
- * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
+ * @author  <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
- *
  * @created Jul 21, 2004
- * @since 1.0
+ * @since   1.0
  */
 public class LifePost extends LifeAction
 {
-	private final String _blogEntry;
 	private final String _blogID;
-	private final boolean _publish;
+	private final String _entry;
+	private final String _file;
+	private final String _fileType;
+	private final String _title;
 
 	/**
 	 * Creates a new LifePost object.
 	 *
-	 * @param thinlet The Thinlet instance.
-	 * @param url The MetaWeblog XML-RPC URL.
-	 * @param blogID The blog ID.
-	 * @param login The MetaWeblog login username.
-	 * @param password The MetaWeblog login password.
-	 * @param blogEntry The blog entry.
-	 * @param publish DOCUMENT ME!
+	 * @param  thinlet     The Thinlet instance.
+	 * @param  url         The MetaWeblog XML-RPC URL.
+	 * @param  blogID      The blog ID.
+	 * @param  login       The MetaWeblog login username.
+	 * @param  password    The MetaWeblog login password.
+	 * @param  title       The post's title, if any.
+	 * @param  description The blog description's text/description.
+	 * @param  file        The file location, if any.
+	 * @param  fileType    The file type, if any.
 	 *
 	 * @throws IOException If an error occurs while creating the object.
 	 */
-	public LifePost(LifeBlogger thinlet, String url, String blogID, String login, String password, String blogEntry,
-					boolean publish)
+	public LifePost(LifeBlogger thinlet, String url, String blogID, String login, String password, String title,
+					String description, String file, String fileType)
 			 throws IOException
 	{
 		super(thinlet, url, login, password);
 
-		_blogEntry = blogEntry;
+		_entry = description;
 		_blogID = blogID;
-		_publish = publish;
+		_title = title;
+		_file = file;
+		_fileType = fileType;
 	}
 
 	/**
@@ -89,122 +90,39 @@ public class LifePost extends LifeAction
 	 */
 	public final void run()
 	{
+		getThinlet().add(getDialog());
+
+
 		try
 		{
-			getThinlet().add(getDialog());
+			final String response;
 
-			final URL url = new URL(getHost());
-
-			if (!"http".equalsIgnoreCase(url.getProtocol()))
+			if (_file.length() != 0)
 			{
-				throw new IOException("Unsupported URL protocol: " + url.getProtocol());
+				response = LifeRPC.taEntryUpdate(getHost(), _blogID, getLogin(), getPassword(), _title, _entry, _file,
+												 _fileType);
 			}
-
-			final StringBuffer request =
-				new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>blogger.newPost</methodName><params><param><value><string>0a6afffffffaffffffb8ffffff8569474cffffffc778500c03ffffffecffffff876116565a27283bffffffda56</string></value></param><param><value><string>").append(_blogID)
-																																																																					  .append("</string></value></param><param><value><string>")
-																																																																					  .append(getLogin())
-																																																																					  .append("</string></value></param><param><value><string>")
-																																																																					  .append(getPassword())
-																																																																					  .append("</string></value></param><param><value><string>")
-																																																																					  .append(textToXML(_blogEntry))
-																																																																					  .append("</string></value></param><param><value><boolean>")
-																																																																					  .append(String.valueOf(_publish))
-																																																																					  .append("</boolean></value></param></params></methodCall>");
-			final URLConnection urlConn = url.openConnection();
-			urlConn.setDoInput(true);
-			urlConn.setDoOutput(true);
-			urlConn.setUseCaches(false);
-			urlConn.setRequestProperty("Content-Length", String.valueOf(request.length()));
-			urlConn.setRequestProperty("Content-Type", "text/xml");
-
-			final DataOutputStream dos = new DataOutputStream(urlConn.getOutputStream());
-			dos.write(request.toString().getBytes());
-			dos.flush();
-			dos.close();
-
-			//System.out.println(request);
-			final LifeRPCResponse xmlrpc = new LifeRPCResponse(urlConn.getInputStream());
-
-			if (xmlrpc.isValidResponse())
+			else if (_title != null)
 			{
-				//getThinlet().closeDialog(getDialog());
-				getThinlet().setIcon(getThinlet().find(getDialog(), "iconlbl"), "icon",
-									 getThinlet().getIcon("/icon/info.gif"));
-				getThinlet().setString(getThinlet().find(getDialog(), "message"), "text",
-									   "Post successful. (ID " + xmlrpc.getResponse() + ')');
-				getThinlet().setBoolean(getThinlet().find(getDialog(), "closebtn"), "enabled", true);
+				response = LifeRPC.metaWeblogNewPost(getHost(), _blogID, getLogin(), getPassword(), _title, _entry);
 			}
 			else
 			{
-				alert(xmlrpc.getResponse());
+				response = LifeRPC.bloggerNewPost(getHost(), _blogID, getLogin(), getPassword(), _entry);
 			}
+
+			getThinlet().setIcon(getThinlet().find(getDialog(), "iconlbl"), "icon",
+								 getThinlet().getIcon("/icon/info.gif"));
+			getThinlet().setString(getThinlet().find(getDialog(), "message"), "text",
+								   "Post successful. (ID " + response + ')');
+			getThinlet().setBoolean(getThinlet().find(getDialog(), "closebtn"), "enabled", true);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			getThinlet().closeDialog(getDialog());
-			getThinlet().handleException(e);
+			alert(e.getMessage());
 		}
+
 	}
 
-	/**
-	 * Converts a character to XML entity.
-	 *
-	 * @param ch The character to convert.
-	 *
-	 * @return The converted string.
-	 */
-	private String charToXML(char ch)
-	{
-		final int c;
 
-		// Convert left bracket
-		if (ch == '<')
-		{
-			return ("&lt;");
-		}
-
-		// Convert ampersand
-		else if (ch == '&')
-		{
-			return ("&amp;");
-		}
-
-		// High/Low-ASCII character
-		else if ((ch >= 128) || (ch < 32))
-		{
-			c = (int) ch;
-
-			return ("&#" + c + ';');
-		}
-
-		// No conversion
-		else
-		{
-			// Return character as string
-			return (String.valueOf(ch));
-		}
-	}
-
-	/**
-	 * Converts a text string to XML entities.
-	 *
-	 * @param text The string to convert.
-	 *
-	 * @return The converted string.
-	 */
-	private String textToXML(String text)
-	{
-		final StringBuffer html = new StringBuffer();
-
-		// Loop thru each characters of the text
-		for (int i = 0; i < text.length(); i++)
-		{
-			// Convert character to XML
-			html.append(charToXML(text.charAt(i)));
-		}
-
-		// Return XML string
-		return html.toString();
-	}
 }

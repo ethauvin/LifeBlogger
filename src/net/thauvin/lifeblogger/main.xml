@@ -7,6 +7,7 @@
 		<menu text="Blog" mnemonic="0">
 			<checkboxmenuitem name="ftp" text="Via FTP" group="via" mnemonic="4" action="setAction(this.name)"/>
 			<checkboxmenuitem name="mw" text="Via MetaWeblog" group="via" mnemonic="4" action="setAction(this.name)"/>
+            <checkboxmenuitem name="ta" text="Via Textamerica" group="via" mnemonic="4" action="setAction(this.name)"/>
 		</menu>
 		<menu text="Help" mnemonic="0">
 			<menuitem text="About" action="about()" icon="/icon/about.gif" mnemonic="0"/>

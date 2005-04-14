@@ -1,7 +1,7 @@
 /*
  * @(#)LifeBlogger.java
  *
- * Copyright (c) 2004, Erik C. Thauvin (http://www.thauvin.net/erik/)
+ * Copyright (c) 2005, Erik C. Thauvin (http://www.thauvin.net/erik/)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,29 +55,30 @@ import javax.imageio.ImageIO;
 
 import javax.swing.*;
 
+import org.apache.xmlrpc.Base64;
+
 
 /**
  * The <code>LifeBlogger</code> class uploads/posts Lifeblog's favorite data to a blog.
  *
- * @author <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
+ * @author  <a href="http://www.thauvin.net/erik/">Erik C. Thauvin</a>
  * @version $Revision$, $Date$
- *
- * @created Jul 19, 2004
- * @since 1.0
+ * @created April 13, 2005
+ * @since   1.0
  */
 public class LifeBlogger extends AntiAliasedThinlet
 {
 	private static final String DRIVER = "SQLite.JDBCDriver";
-	private static final String PREFS =
-		System.getProperty("user.home") + File.separator + ReleaseInfo.getProject() + ".properties";
+	private static final String PREFS = System.getProperty("user.home") + File.separator + ReleaseInfo.getProject() +
+										".properties";
 	private static final String JDBC_PREFIX = "jdbc:sqlite:/";
 	private static final String DATABASE = "\\DataBase\\NokiaLifeblogDataBase.db";
 	private static final String DEFAULT_ACTION = "mw";
 	private static final String MIME_JPG = "image/jpeg";
 	private static final String MIME_3GP = "video/3gpp";
-	private final Properties _prefs = new Properties();
-	private File _homeDir = new File(System.getProperty("user.home") + "\\My Documents\\NokiaLifeblogData");
 	private String _action;
+	private File _homeDir = new File(System.getProperty("user.home") + "\\My Documents\\NokiaLifeblogData");
+	private final Properties _prefs = new Properties();
 
 	/**
 	 * Creates a new LifeBlogger object.
@@ -164,18 +165,6 @@ public class LifeBlogger extends AntiAliasedThinlet
 	}
 
 	/**
-	 * Sets the blog action.
-	 *
-	 * @param action The action
-	 */
-	public final void setAction(String action)
-	{
-		_action = action;
-		_prefs.put("via", _action);
-		savePrefs();
-	}
-
-	/**
 	 * Displays the about dialog.
 	 */
 	public final void about()
@@ -200,9 +189,9 @@ public class LifeBlogger extends AntiAliasedThinlet
 	/**
 	 * Populates the table rows.
 	 *
-	 * @param thinlet The Thinlet object.
-	 * @param table The table to populate.
-	 * @param buttonsPanel The panel containing the buttons/label to update.
+	 * @param  thinlet      The Thinlet object.
+	 * @param  table        The table to populate.
+	 * @param  buttonsPanel The panel containing the buttons/label to update.
 	 *
 	 * @throws Exception If an error occurs while populate the table.
 	 */
@@ -320,7 +309,7 @@ public class LifeBlogger extends AntiAliasedThinlet
 	/**
 	 * Performs the blog action.
 	 *
-	 * @param table The table containing the selected item to perform the action on.
+	 * @param  table The table containing the selected item to perform the action on.
 	 *
 	 * @throws Exception If an error occurs while performing the action.
 	 */
@@ -341,6 +330,10 @@ public class LifeBlogger extends AntiAliasedThinlet
 				if ("ftp".equals(_action))
 				{
 					ftpDialog(info[1]);
+				}
+				else if ("ta".equals(_action))
+				{
+					taDialog(info[1], info[2]);
 				}
 				else
 				{
@@ -371,8 +364,8 @@ public class LifeBlogger extends AntiAliasedThinlet
 	/**
 	 * Preforms the FTP action.
 	 *
-	 * @param dialog The FTP dialog,
-	 * @param ftpPanel The panel contaning the FTP data.
+	 * @param  dialog   The FTP dialog,
+	 * @param  ftpPanel The panel contaning the FTP data.
 	 *
 	 * @throws IOException If an error occurs while performing the action.
 	 */
@@ -401,16 +394,14 @@ public class LifeBlogger extends AntiAliasedThinlet
 		{
 			_prefs.put("host", host);
 			_prefs.put("login", login);
-			_prefs.put("password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
+			_prefs.put("password", new String(Base64.encode(password.getBytes())));
 			_prefs.put("path", path);
-
 			savePrefs();
 
 			closeDialog(dialog);
 
-			final LifeFTP ftp =
-				new LifeFTP(this, host, login, password, path, filename,
-							new File(getString(find(ftpPanel, "file"), "text")));
+			final LifeFTP ftp = new LifeFTP(this, host, login, password, path, filename,
+											new File(getString(find(ftpPanel, "file"), "text")));
 			ftp.start();
 		}
 	}
@@ -418,8 +409,8 @@ public class LifeBlogger extends AntiAliasedThinlet
 	/**
 	 * Preforms the MetaWeblog action.
 	 *
-	 * @param dialog The MetaWeblog dialog,
-	 * @param mwPanel The panel contaning the MetaWeblog data.
+	 * @param  dialog  The MetaWeblog dialog,
+	 * @param  mwPanel The panel contaning the MetaWeblog data.
 	 *
 	 * @throws IOException If an error occurs while performing the action.
 	 */
@@ -456,14 +447,14 @@ public class LifeBlogger extends AntiAliasedThinlet
 		{
 			_prefs.put("mw-host", host);
 			_prefs.put("mw-login", login);
-			_prefs.put("mw-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
+			_prefs.put("mw-password", new String(Base64.encode(password.getBytes())));
 			_prefs.put("mw-id", blogID);
 
 			if (_prefs.getProperty("blog-host") == null)
 			{
 				_prefs.put("blog-host", host);
 				_prefs.put("blog-login", login);
-				_prefs.put("blog-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
+				_prefs.put("blog-password", new String(Base64.encode(password.getBytes())));
 				_prefs.put("blog-id", blogID);
 			}
 
@@ -471,35 +462,22 @@ public class LifeBlogger extends AntiAliasedThinlet
 
 			closeDialog(dialog);
 
-			final LifeMediaObject mw =
-				new LifeMediaObject(this, host, blogID, login, password, filename,
-									String.valueOf(getProperty(find(mwPanel, "file"), "mtype")),
-									new File(getString(find(mwPanel, "file"), "text")));
+			final LifeMediaObject mw = new LifeMediaObject(this, host, blogID, login, password, filename,
+														   String.valueOf(getProperty(find(mwPanel, "file"), "mtype")),
+														   new File(getString(find(mwPanel, "file"), "text")));
 			mw.start();
 		}
 	}
 
-	/**
-	 * Preforms the post to blog action.
-	 *
-	 * @param dialog The post dialog,
-	 * @param blogPanel The panel contaning the post data.
-	 *
-	 * @throws IOException If an error occurs while performing the action.
-	 */
-	public final void post(Object dialog, Object blogPanel)
-					throws IOException
-	{
-		post(dialog, blogPanel, false);
-	}
 
 	/**
 	 * Displays the post to blog dialog.
 	 *
-	 * @param url The URL pointing to the location of the media object.
-	 * @param filename DOCUMENT ME!
+	 * @param url        The URL pointing to the location of the media object.
+	 * @param filename   The file name.
+	 * @param metaWeblog The metaWeblog flag.
 	 */
-	public final void postDialog(String url, String filename)
+	public final void postDialog(String url, String filename, boolean metaWeblog)
 	{
 		try
 		{
@@ -507,10 +485,25 @@ public class LifeBlogger extends AntiAliasedThinlet
 			setString(find(post, "host"), "text", _prefs.getProperty("blog-host", ""));
 			setString(find(post, "blogid"), "text", _prefs.getProperty("blog-id", ""));
 			setString(find(post, "login"), "text", _prefs.getProperty("blog-login", ""));
-			setString(find(post, "password"), "text", new String(Base64.decode(_prefs.getProperty("blog-password", ""))));
+			setString(find(post, "password"), "text",
+					  new String(Base64.decode(_prefs.getProperty("blog-password", "").getBytes())));
 			setString(find(post, "entry"), "text",
 					  "<img src=\"" + url + "\" alt=\"" + filename +
 					  "\">\r<p>via <a href=\"http://www.thauvin.net/erik/lifeblogger/\">LifeBlogger</a></p>");
+
+			if (metaWeblog)
+			{
+				setBoolean(find(post, "title"), "visible", true);
+				setBoolean(find(post, "titleFld"), "visible", true);
+				setString(post, "text", getString(post, "text") + " (MetaWeblog API)");
+			}
+			else
+			{
+				setBoolean(find(post, "title"), "visible", false);
+				setBoolean(find(post, "titleFld"), "visible", false);
+				setString(post, "text", getString(post, "text") + "  (Blogger API)");
+			}
+
 			add(post);
 		}
 		catch (Exception e)
@@ -522,7 +515,7 @@ public class LifeBlogger extends AntiAliasedThinlet
 	/**
 	 * Previews a JPEG image.
 	 *
-	 * @param table The data table.
+	 * @param  table The data table.
 	 *
 	 * @throws Exception If an error occurs while previewing the image.
 	 */
@@ -540,7 +533,7 @@ public class LifeBlogger extends AntiAliasedThinlet
 
 			if ((info[1] != null) && MIME_JPG.equals(info[2]))
 			{
-				// Retrieve	the jpg	image
+				// Retrieve     the jpg image
 				final BufferedImage in = ImageIO.read(new File(info[1]));
 
 				final int maxDim = 200;
@@ -589,21 +582,89 @@ public class LifeBlogger extends AntiAliasedThinlet
 	/**
 	 * Preforms the publish to blog action.
 	 *
-	 * @param dialog The post dialog,
-	 * @param blogPanel The panel contaning the post data.
+	 * @param  dialog    The post dialog,
+	 * @param  blogPanel The panel contaning the post data.
 	 *
 	 * @throws IOException If an error occurs while performing the action.
 	 */
-	public final void publish(Object dialog, Object blogPanel)
-					   throws IOException
+	public void publish(Object dialog, Object blogPanel)
+				 throws IOException
 	{
-		post(dialog, blogPanel, true);
+		final String host = getString(find(blogPanel, "host"), "text");
+		final String blogID = getString(find(blogPanel, "blogid"), "text");
+		final String login = getString(find(blogPanel, "login"), "text");
+		final String password = getString(find(blogPanel, "password"), "text");
+		final String entry = getString(find(blogPanel, "entry"), "text");
+
+		final Object fileFld = find(blogPanel, "file");
+		final String file = getString(fileFld, "text");
+		final String fileType = (String) getProperty(fileFld, "mime");
+
+		final String title;
+		final Object titleFld = find(blogPanel, "title");
+
+		if (getBoolean(titleFld, "visible"))
+		{
+			title = getString(titleFld, "text");
+		}
+		else
+		{
+			title = null;
+		}
+
+		if (host.length() <= 0)
+		{
+			alert("Please specify a XML-RPC URL.");
+		}
+		else if (login.length() <= 0)
+		{
+			alert("Please specify a login name.");
+		}
+		else if (password.length() <= 0)
+		{
+			alert("Please specify a password.");
+		}
+		else if (entry.length() <= 0)
+		{
+			alert("Please specify a post entry.");
+		}
+		else if (blogID.length() <= 0)
+		{
+			alert("Please specify a blog ID.");
+		}
+		else
+		{
+			_prefs.put("blog-host", host);
+			_prefs.put("blog-login", login);
+			_prefs.put("blog-password", new String(Base64.encode(password.getBytes())));
+			_prefs.put("blog-id", blogID);
+
+			savePrefs();
+
+			closeDialog(dialog);
+
+			final LifePost post = new LifePost(this, host, blogID, login, password, title,
+											   getString(find(blogPanel, "entry"), "text"), file, fileType);
+			post.start();
+		}
+	}
+
+	/**
+	 * Sets the blog action.
+	 *
+	 * @param action The action
+	 */
+	public final void setAction(String action)
+	{
+		_action = action;
+		_prefs.put("via", _action);
+		savePrefs();
 	}
 
 	/**
 	 * Toggles the given button based on the specified table selection.
 	 *
-	 * @param table The table.
+	 * @param table  The table.
 	 * @param button The button.
 	 */
 	public final void toggleButton(Object table, Object button)
@@ -614,8 +675,8 @@ public class LifeBlogger extends AntiAliasedThinlet
 	/**
 	 * Updates the table data.
 	 *
-	 * @param thinlet The Thinlet object.
-	 * @param table The table to update.
+	 * @param thinlet      The Thinlet object.
+	 * @param table        The table to update.
 	 * @param buttonsPanel The panel containing the buttons/label to update.
 	 */
 	public final void updateTable(Thinlet thinlet, Object table, Object buttonsPanel)
@@ -737,7 +798,7 @@ public class LifeBlogger extends AntiAliasedThinlet
 			setString(find(ftp, "host"), "text", _prefs.getProperty("host", ""));
 			setString(find(ftp, "login"), "text", _prefs.getProperty("login", "anonymous"));
 			setString(find(ftp, "path"), "text", _prefs.getProperty("path", ""));
-			setString(find(ftp, "password"), "text", new String(Base64.decode(_prefs.getProperty("password", ""))));
+			setString(find(ftp, "password"), "text", new String(Base64.decode(_prefs.getProperty("password", "").getBytes())));
 			add(ftp);
 			requestFocus(find(ftp, "host"));
 		}
@@ -758,7 +819,7 @@ public class LifeBlogger extends AntiAliasedThinlet
 			setString(find(mw, "filename"), "text", file.substring(file.lastIndexOf('\\') + 1));
 			setString(find(mw, "host"), "text", _prefs.getProperty("mw-host", ""));
 			setString(find(mw, "login"), "text", _prefs.getProperty("mw-login", ""));
-			setString(find(mw, "password"), "text", new String(Base64.decode(_prefs.getProperty("mw-password", ""))));
+			setString(find(mw, "password"), "text", new String(Base64.decode(_prefs.getProperty("mw-password", "").getBytes())));
 			setString(find(mw, "blogid"), "text", _prefs.getProperty("mw-id", ""));
 			add(mw);
 			requestFocus(find(mw, "host"));
@@ -766,61 +827,6 @@ public class LifeBlogger extends AntiAliasedThinlet
 		catch (Exception e)
 		{
 			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Preforms the post/publish to blog action.
-	 *
-	 * @param dialog The post dialog,
-	 * @param blogPanel The panel contaning the post data.
-	 * @param publish Set to <code>true</code> to publish the post, <code>false</code> otherwise.
-	 *
-	 * @throws IOException If an error occurs while performing the action.
-	 */
-	private void post(Object dialog, Object blogPanel, boolean publish)
-			   throws IOException
-	{
-		final String host = getString(find(blogPanel, "host"), "text");
-		final String blogID = getString(find(blogPanel, "blogid"), "text");
-		final String login = getString(find(blogPanel, "login"), "text");
-		final String password = getString(find(blogPanel, "password"), "text");
-		final String entry = getString(find(blogPanel, "entry"), "text");
-
-		if (host.length() <= 0)
-		{
-			alert("Please specify a XML-RPC URL.");
-		}
-		else if (login.length() <= 0)
-		{
-			alert("Please specify a login name.");
-		}
-		else if (password.length() <= 0)
-		{
-			alert("Please specify a password.");
-		}
-		else if (entry.length() <= 0)
-		{
-			alert("Please specify a post entry.");
-		}
-		else if (blogID.length() <= 0)
-		{
-			alert("Please specify a blog ID.");
-		}
-		else
-		{
-			_prefs.put("blog-host", host);
-			_prefs.put("blog-login", login);
-			_prefs.put("blog-password", Base64.encodeBytes(password.getBytes(), Base64.DONT_BREAK_LINES));
-			_prefs.put("blog-id", blogID);
-
-			savePrefs();
-
-			closeDialog(dialog);
-
-			final LifePost post =
-				new LifePost(this, host, blogID, login, password, getString(find(blogPanel, "entry"), "text"), publish);
-			post.start();
 		}
 	}
 
@@ -852,6 +858,41 @@ public class LifeBlogger extends AntiAliasedThinlet
 					; // Do nothing
 				}
 			}
+		}
+	}
+
+	// Display the Textamerica dialog
+	private void taDialog(String file, String mimeType)
+	{
+		if ((!mimeType.equals(MIME_JPG)) && (!mimeType.equals(MIME_3GP)))
+		{
+			alert("This media type is not supported by Textamerica.");
+
+			return;
+		}
+
+		try
+		{
+			final Object post = parse("post.xml");
+			setString(find(post, "host"), "text", _prefs.getProperty("blog-host", "http://xml.api.textamerica.com/"));
+			setString(find(post, "blogid"), "text", _prefs.getProperty("blog-id", ""));
+			setString(find(post, "login"), "text", _prefs.getProperty("blog-login", ""));
+			setString(find(post, "password"), "text",
+					  new String(Base64.decode(_prefs.getProperty("blog-password", "").getBytes())));
+
+			final Object fileFld = find(post, "file");
+			setString(fileFld, "text", file);
+			putProperty(fileFld, "mime", ((mimeType == MIME_JPG) ? "JPG" : "3GP"));
+
+			setBoolean(find(post, "title"), "visible", true);
+			setBoolean(find(post, "titleFld"), "visible", true);
+			setString(post, "text", getString(post, "text") + " (Textamerica API)");
+
+			add(post);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 }

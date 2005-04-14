@@ -19,6 +19,7 @@
 		<jar href="commons-net-1.3.0.jar"/>
 		<jar href="sqlite.jar"/>
 		<jar href="thinlet.jar"/>
+		<jar href="xmlrpc-1.1.jar"/>
 		<nativelib href="sqlite_jni.dll"/>
 	</resources>
 	<application-desc main-class="net.thauvin.lifeblogger.LifeBlogger"/>
