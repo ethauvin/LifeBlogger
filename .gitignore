@@ -1,0 +1,8 @@
+/build/
+/dist/
+/dist-signed/
+/CVS/
+CVS
+/ftp.properties
+/keystore.properties
+/buildnum.properties
