@@ -1,8 +1,11 @@
-/build/
-/dist/
-/dist-signed/
+*.iws
 /CVS/
-CVS
+/build/
+/buildnum.properties
+/dist-signed/
+/dist/
 /ftp.properties
 /keystore.properties
-/buildnum.properties
+CVS
+Thumbs.db
+ehthumbs.db
